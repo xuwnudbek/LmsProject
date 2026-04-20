@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace LmsProjectApi.Exceptions
 {
-    public class NotFoundException : Exception
+    public class NotFoundException : BaseException
     {
-        public NotFoundException()
+        public NotFoundException(string message)
+            : base(message, StatusCodes.Status404NotFound, "NOT_FOUND")
         { }
 
-        public NotFoundException(string message) : base(message)
-        { }
-
-        public NotFoundException(string message, Exception innerException) : base(message, innerException)
+        public NotFoundException(string resourceName, object key)
+            : base($"{resourceName} with key '{key}' was not found.", StatusCodes.Status404NotFound, "NOT_FOUND")
         { }
     }
 }

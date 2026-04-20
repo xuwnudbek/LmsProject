@@ -25,54 +25,52 @@ namespace LmsProjectApi.Repositories.Users
             return user;
         }
 
-        public List<User> SelectAllUsersAsync()
+        public IQueryable<User> SelectAllUsers()
         {
-            List<User> users = 
-                this.dbContext.Users
-                    .AsNoTracking()
-                    .ToList();
+            return this.dbContext.Users
+                .Include(user => user.Role)
+                .AsNoTracking();
+        }
 
-            return users;
+        public IQueryable<User> SelectUsersByRoleId(Guid roleId)
+        {
+            return this.dbContext.Users
+                .AsNoTracking()
+                .Include(u => u.Role)
+                .Where(user => user.RoleId == roleId);
         }
 
         public async Task<User> SelectUserByIdAsync(Guid userId)
         {
-            User existingUser =
-                await this.dbContext.Users
-                    .Include(user => user.Role)
-                    .FirstOrDefaultAsync(user => user.Id == userId);
-
-            return existingUser;
+            return await this.dbContext.Users
+                .Include(user => user.Role)
+                .FirstOrDefaultAsync(user => user.Id == userId);
         }
 
         public async Task<User> SelectUserByUsernameAsync(string username)
         {
-            User existingUser =
-                await this.dbContext.Users
-                    .FirstOrDefaultAsync(user => user.Username == username);
-
-            return existingUser;
+            return await this.dbContext.Users
+                .FirstOrDefaultAsync(user => user.Username == username);
         }
 
-        public async Task<User> UpdateUserAsync(User user)
+        public async Task UpdateUserAsync()
         {
             await this.dbContext.SaveChangesAsync();
-            return user;
         }
 
-        public async Task<User> DeleteUserAsync(Guid userId)
+        public async Task DeleteUserAsync(Guid userId)
         {
-            var user = await this.dbContext.Users
+            var existingUser = await this.dbContext.Users
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
-            if (user is null)
+            if (existingUser is null)
                 return null;
 
-            user.IsActive = false;
+            existingUser.IsActive = false;
 
             await this.dbContext.SaveChangesAsync();
 
-            return user;
+            return existingUser;
         }
     }
 }

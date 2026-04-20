@@ -13,6 +13,6 @@ namespace LmsProjectApi.Repositories.Roles
         Task<List<Role>> SelectAllRolesAsync();
         Task<Role> SelectRoleByIdAsync(Guid roleId);
         Task<Role> UpdateRoleAsync(Role role);
-        Task<Role> DeleteRoleAsync(Guid roleId);
+        Task DeleteRoleAsync(Guid roleId);
     }
 }

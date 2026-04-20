@@ -9,10 +9,10 @@ namespace LmsProjectApi.Services.Users
 {
     public interface IUserService
     {
-        Task<User> AddUserAsync(UserCreateDto dto);
+        Task<User> AddUserAsync(UserCreateDto dto, Guid roleId);
         Task<List<User>> GetAllUsers();
         Task<User> GetUserById(Guid userId);
         Task<User> UpdateUserAsync(UserUpdateDto dto);
-        Task<User> DeleteUserAsync(Guid userId);
+        Task DeleteUserAsync(Guid userId);
     }
 }
