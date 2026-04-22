@@ -1,7 +1,10 @@
 
 using LmsProjectApi.Data;
 using LmsProjectApi.Mappings;
+using LmsProjectApi.Middlewares;
+using LmsProjectApi.Repositories.Roles;
 using LmsProjectApi.Repositories.Users;
+using LmsProjectApi.Services.Roles;
 using LmsProjectApi.Services.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -34,13 +37,18 @@ namespace LmsProjectApi
             //builder.Services.AddAuthorization();
 
             // III. Custom Services
+            // Repositories
             builder.Services.AddTransient<IUserRepository, UserRepository>();
+            builder.Services.AddTransient<IRoleRepository, RoleRepository>();
+            // Services
             builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<IRoleService, RoleService>();
+
 
             // IV. Framework Services
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
-            builder.Services.AddAutoMapper(cfg => {}, typeof(UserProfile));
+            builder.Services.AddAutoMapper(cfg => {}, typeof(Program));
             
             // Build app
             var app = builder.Build();
@@ -52,6 +60,7 @@ namespace LmsProjectApi
                 app.MapScalarApiReference();
             }
 
+            app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();

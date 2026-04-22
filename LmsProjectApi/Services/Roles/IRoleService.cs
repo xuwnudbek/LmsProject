@@ -1,4 +1,5 @@
-﻿using LmsProjectApi.Models;
+﻿using LmsProjectApi.DTOs.Role;
+using LmsProjectApi.Models;
 using LmsProjectApi.Repositories.Roles;
 using System;
 using System.Collections.Generic;
@@ -8,10 +9,10 @@ namespace LmsProjectApi.Services.Roles
 {
     public interface IRoleService
     {
-        Task<Role> AddRoleAsync(Role role);
-        Task<List<Role>> GetAllRolesAsync();
-        Task<Role> GetRoleByIdAsync(Guid roleId);
-        Task<Role> UpdateRoleAsync(Role role);
-        Task<bool> DeleteRoleAsync(Guid roleId);
+        Task<RoleResponseDto> AddRoleAsync(RoleCreateDto role);
+        Task<List<RoleResponseDto>> GetAllRolesAsync();
+        Task<RoleResponseDto> GetRoleByIdAsync(Guid roleId);
+        Task<RoleResponseDto> UpdateRoleAsync(Guid roleId, RoleUpdateDto role);
+        Task DeleteRoleAsync(Guid roleId);
     }
 }

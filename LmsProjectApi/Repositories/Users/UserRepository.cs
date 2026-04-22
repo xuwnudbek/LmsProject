@@ -2,7 +2,6 @@
 using LmsProjectApi.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -64,13 +63,11 @@ namespace LmsProjectApi.Repositories.Users
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (existingUser is null)
-                return null;
+                return;
 
             existingUser.IsActive = false;
 
             await this.dbContext.SaveChangesAsync();
-
-            return existingUser;
         }
     }
 }

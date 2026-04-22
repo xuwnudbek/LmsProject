@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using LmsProjectApi.DTOs.User;
-using LmsProjectApi.DTOs.Users;
 using LmsProjectApi.Models;
 
 namespace LmsProjectApi.Mappings
@@ -10,12 +9,13 @@ namespace LmsProjectApi.Mappings
         public UserProfile()
         {
             CreateMap<UserCreateDto, User>()
-                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
-            CreateMap<UserResponseDto, User>();
-            CreateMap<UserUpdateDto, User>();
-            CreateMap<ChangePasswordDto, User>();
-            CreateMap<ChangeRoleDto, User>();
-            CreateMap<ChangeStatusDto, User>();
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
+                .ReverseMap();
+            CreateMap<UserResponseDto, User>().ReverseMap();
+            CreateMap<UserUpdateDto, User>().ReverseMap();
+            CreateMap<ChangePasswordDto, User>().ReverseMap();
+            CreateMap<ChangeRoleDto, User>().ReverseMap();
+            CreateMap<ChangeStatusDto, User>().ReverseMap();
         }
     }
 }

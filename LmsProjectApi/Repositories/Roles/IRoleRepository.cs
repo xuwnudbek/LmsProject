@@ -12,6 +12,7 @@ namespace LmsProjectApi.Repositories.Roles
         Task<Role> InsertRoleAsync(Role role);
         Task<List<Role>> SelectAllRolesAsync();
         Task<Role> SelectRoleByIdAsync(Guid roleId);
+        Task<Role> SelectRoleByNameAsync(string name);
         Task<Role> UpdateRoleAsync(Role role);
         Task DeleteRoleAsync(Guid roleId);
     }

@@ -3,7 +3,6 @@ using LmsProjectApi.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,9 +26,20 @@ namespace LmsProjectApi.Repositories.Roles
         public Task<List<Role>> SelectAllRolesAsync() =>
             this.dbContext.Roles.ToListAsync();
 
-        public Task<Role> SelectRoleByIdAsync(Guid roleId) =>
-            this.dbContext.Roles
-                .FirstOrDefaultAsync(role => role.Id == roleId);
+        public Task<Role> SelectRoleByIdAsync(Guid roleId)
+        {
+            var role = this.dbContext.Roles
+                .Find(roleId);
+        
+            return this.dbContext.Roles
+                .FirstOrDefaultAsync(r => r.Id == roleId);
+        }
+
+        public Task<Role> SelectRoleByNameAsync(string name)
+        {
+            return this.dbContext.Roles
+                .FirstOrDefaultAsync(r => r.Name == name);
+        }
 
         public async Task<Role> UpdateRoleAsync(Role role)
         {
@@ -58,6 +68,5 @@ namespace LmsProjectApi.Repositories.Roles
 
             await this.dbContext.SaveChangesAsync();
         }
-
     }
 }

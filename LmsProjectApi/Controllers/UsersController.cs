@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
-using LmsProjectApi.DTOs.Users;
-using LmsProjectApi.Models;
+using LmsProjectApi.DTOs.User;
 using LmsProjectApi.Services.Users;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LmsProjectApi.Controllers
@@ -15,7 +16,7 @@ namespace LmsProjectApi.Controllers
         private readonly IMapper _mapper;
 
         public UsersController(
-            IUserService userService, 
+            IUserService userService,
             IMapper mapper)
         {
             _userService = userService;
@@ -23,17 +24,25 @@ namespace LmsProjectApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserResponseDto>> PostUserAsync(UserCreateDto dto)
+        public async Task<ActionResult<UserResponseDto>> PostUserAsync(
+            [FromBody] UserCreateDto dto)
         {
-            User newUser = 
+            UserResponseDto newUser =
                 await _userService.AddUserAsync(dto);
 
-            var userResponseDto = _mapper.Map<UserResponseDto>(newUser);
+            var userResponseDto =
+                _mapper.Map<UserResponseDto>(newUser);
 
-            return CreatedAtAction(
-                nameof(PostUserAsync),
-                userResponseDto
-            );
-        } 
+            return Created(string.Empty, userResponseDto);
+        }
+
+        [HttpGet]
+        public async Task<List<UserResponseDto>> GetAllUsersAsync()
+        {
+            List<UserResponseDto> users =
+                await _userService.GetAllUsersAsync();
+
+            return users;
+        }
     }
 }
