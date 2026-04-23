@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using LmsProjectApi.DTOs.User;
-using LmsProjectApi.Models;
+using LmsProjectApi.Models.Users;
 
 namespace LmsProjectApi.Mappings
 {

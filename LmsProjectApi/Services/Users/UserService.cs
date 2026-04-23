@@ -2,8 +2,7 @@
 using LmsProjectApi.DTOs.User;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Helpers;
-using LmsProjectApi.Models;
-using LmsProjectApi.Repositories.Roles;
+using LmsProjectApi.Models.Users;
 using LmsProjectApi.Repositories.Users;
 using System;
 using System.Collections.Generic;
@@ -15,16 +14,13 @@ namespace LmsProjectApi.Services.Users
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IRoleRepository _roleRepository;
         private readonly IMapper _mapper;
 
         public UserService(
             IUserRepository userRepository,
-            IMapper mapper, 
-            IRoleRepository roleRepository)
+            IMapper mapper)
         {
             _userRepository = userRepository;
-            _roleRepository = roleRepository;
             _mapper = mapper;
         }
 
@@ -51,19 +47,12 @@ namespace LmsProjectApi.Services.Users
             user.CreatedAt = now;
             user.UpdatedAt = now;
 
-            var existingRole = 
-                await _roleRepository.SelectRoleByIdAsync(dto.RoleId);
-
-            if (existingRole is null)
-                throw new NotFoundException($"Role with id '{dto.RoleId}' not found.");
-
-            user.RoleId = dto.RoleId;
 
             User newUser = await _userRepository.InsertUserAsync(user);
 
             return _mapper.Map<UserResponseDto>(newUser);
         }
-
+            
         public async Task<List<UserResponseDto>> GetAllUsersAsync()
         {
             IQueryable<User> users = 
@@ -90,8 +79,6 @@ namespace LmsProjectApi.Services.Users
 
             if (existingUser is null)
                 throw new NotFoundException("User not found.");
-
-
 
             await _userRepository.UpdateUserAsync();
 

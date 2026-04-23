@@ -1,6 +1,6 @@
-﻿using LmsProjectApi.Models;
+﻿using LmsProjectApi.Enums;
+using LmsProjectApi.Models.Users;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,7 +10,7 @@ namespace LmsProjectApi.Repositories.Users
     {
         Task<User> InsertUserAsync(User user);
         IQueryable<User> SelectAllUsers();
-        IQueryable<User> SelectUsersByRoleId(Guid roleId);
+        IQueryable<User> SelectUsersByRoleId(UserRole role);
         Task<User> SelectUserByIdAsync(Guid userId);
         Task<User> SelectUserByUsernameAsync(string username);
         Task UpdateUserAsync();

@@ -25,7 +25,7 @@ namespace LmsProjectApi.Helpers
             return Convert.ToBase64String(hashBytes);
         }
 
-        public static bool VerifyPassword(string inputPassword, string storedHash)
+        public static bool Verify(string inputPassword, string storedHash)
         {
             byte[] hashBytes = Convert.FromBase64String(storedHash);
 

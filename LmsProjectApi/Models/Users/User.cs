@@ -1,6 +1,7 @@
-﻿using System;
+﻿using LmsProjectApi.Enums;
+using System;
 
-namespace LmsProjectApi.Models
+namespace LmsProjectApi.Models.Users
 {
     public class User
     {
@@ -15,7 +16,6 @@ namespace LmsProjectApi.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         
-        public Guid RoleId { get; set; }
-        public Role Role { get; set; }
+        public UserRole Role { get; set; }
     }
 }

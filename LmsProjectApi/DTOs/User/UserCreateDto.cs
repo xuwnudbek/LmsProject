@@ -1,4 +1,5 @@
-﻿using LmsProjectApi.Models;
+﻿using LmsProjectApi.Enums;
+using LmsProjectApi.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -25,6 +26,6 @@ namespace LmsProjectApi.DTOs.User
         public string ConfirmPassword { get; set; }
 
         [Required]
-        public Guid RoleId { get; set; }
+        public UserRole Role { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using LmsProjectApi.Data;
-using LmsProjectApi.Models;
+using LmsProjectApi.Enums;
+using LmsProjectApi.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -27,22 +28,18 @@ namespace LmsProjectApi.Repositories.Users
         public IQueryable<User> SelectAllUsers()
         {
             return this.dbContext.Users
-                .Include(user => user.Role)
                 .AsNoTracking();
         }
 
-        public IQueryable<User> SelectUsersByRoleId(Guid roleId)
+        public IQueryable<User> SelectUsersByRoleId(UserRole role)
         {
             return this.dbContext.Users
-                .AsNoTracking()
-                .Include(u => u.Role)
-                .Where(user => user.RoleId == roleId);
+                .Where(user => user.Role == role);
         }
 
         public async Task<User> SelectUserByIdAsync(Guid userId)
         {
             return await this.dbContext.Users
-                .Include(user => user.Role)
                 .FirstOrDefaultAsync(user => user.Id == userId);
         }
 

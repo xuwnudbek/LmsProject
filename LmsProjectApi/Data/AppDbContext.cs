@@ -1,6 +1,5 @@
-﻿using LmsProjectApi.Models;
+﻿using LmsProjectApi.Models.Users;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace LmsProjectApi.Data
 {
@@ -9,11 +8,14 @@ namespace LmsProjectApi.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         { }
 
-        public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>().HasData(
+                new User { Id = Guid }    
+            );
+
             base.OnModelCreating(modelBuilder);
         }
 
