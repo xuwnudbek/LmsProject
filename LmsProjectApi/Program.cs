@@ -1,7 +1,11 @@
 using LmsProjectApi.Data;
 using LmsProjectApi.Middlewares;
+using LmsProjectApi.Repositories.Levels;
+using LmsProjectApi.Repositories.Subjects;
 using LmsProjectApi.Repositories.Users;
 using LmsProjectApi.Services.Accounts;
+using LmsProjectApi.Services.Levels;
+using LmsProjectApi.Services.Subjects;
 using LmsProjectApi.Services.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -22,8 +26,7 @@ namespace LmsProjectApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
+            // ADD SERVICES TO THE CONTAINER.
             // I. Database
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
@@ -53,15 +56,19 @@ namespace LmsProjectApi
                             Encoding.UTF8.GetBytes(builder.Configuration["AuthConfiguration:Key"])),
                     };
                 });
-
-            //builder.Services.AddAuthorization();
+            builder.Services.AddAuthorization();
 
             // III. Custom Services
             // Repositories
             builder.Services.AddTransient<IUserRepository, UserRepository>();
+            builder.Services.AddTransient<ISubjectRepository, SubjectRepository>();
+            builder.Services.AddTransient<ILevelRepository, LevelRepository>();
+
             // Services
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<IAccountService, AccountService>();
+            builder.Services.AddTransient<ISubjectService, SubjectService>();
+            builder.Services.AddTransient<ILevelService, LevelService>();
 
             // IV. Framework Services
             builder.Services.AddControllers();
@@ -75,7 +82,7 @@ namespace LmsProjectApi
             using (var scope = app.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                
+
                 await DataSeeder.SeedUsers(context);
             }
 
@@ -93,5 +100,6 @@ namespace LmsProjectApi
             app.MapControllers();
             app.Run();
         }
+    
     }
 }

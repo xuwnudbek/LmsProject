@@ -54,14 +54,14 @@ namespace LmsProjectApi.Services.Accounts
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Role, user.Role.ToString()),
             };
 
-            DateTime expirationDate = DateTime.Now.AddMinutes(30);
+            DateTime expirationDate = DateTime.Now.AddMinutes(1440);
 
             var securityToken = new JwtSecurityToken(
                 issuer: issuer,

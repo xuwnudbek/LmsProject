@@ -1,0 +1,24 @@
+﻿using AutoMapper;
+using LmsProjectApi.DTOs.Subject;
+using LmsProjectApi.Models.SubjectLevels;
+using LmsProjectApi.Models.Subjects;
+
+namespace LmsProjectApi.Mappings
+{
+    public class SubjectProfile : Profile
+    {
+        public SubjectProfile()
+        {
+            CreateMap<SubjectCreateDto, Subject>()
+                .ForMember(s => s.SubjectLevels,
+                    opt => opt.MapFrom(src => src.Levels));
+
+            CreateMap<Subject, SubjectResponseDto>()
+                .ForMember(srd => srd.Levels,
+                    opt => opt.MapFrom(src => src.SubjectLevels));
+
+            CreateMap<Subject, SubjectSimpleDto>();
+            CreateMap<SubjectUpdateDto, Subject>();
+        }
+    }
+}

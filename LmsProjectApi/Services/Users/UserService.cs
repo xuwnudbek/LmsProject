@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using LmsProjectApi.DTOs.User;
+using LmsProjectApi.Enums;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Helpers;
 using LmsProjectApi.Models.Users;
 using LmsProjectApi.Repositories.Users;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,12 +26,19 @@ namespace LmsProjectApi.Services.Users
             _mapper = mapper;
         }
 
-        public async Task<UserResponseDto> AddUserAsync(UserCreateDto dto)
+        public async Task<UserResponseDto> AddUserAsync(
+            UserCreateDto dto,
+            UserRole authUserRole)
         {
-            string normalizedUsername = 
+            if (authUserRole is UserRole.Manager && dto.Role is UserRole.Admin)
+            {
+                throw new ForbiddenException("Access denied");
+            }
+
+            string normalizedUsername =
                 dto.Username.Trim().ToLowerInvariant();
-            
-            var existingUser = 
+
+            var existingUser =
                 await _userRepository
                     .SelectUserByUsernameAsync(normalizedUsername);
 
@@ -52,18 +61,22 @@ namespace LmsProjectApi.Services.Users
 
             return _mapper.Map<UserResponseDto>(newUser);
         }
-            
-        public async Task<List<UserResponseDto>> GetAllUsersAsync()
+
+        public async Task<List<UserResponseDto>> GetAllUsersAsync(UserRole authUserRole)
         {
-            IQueryable<User> users = 
-                _userRepository.SelectAllUsers();
+            IQueryable<User> users = _userRepository.SelectAllUsers();
+
+            if (authUserRole is UserRole.Manager)
+            {
+                users = users.Where(u => u.Role != UserRole.Admin);
+            }
 
             return _mapper.Map<List<UserResponseDto>>(users);
         }
 
         public async Task<UserResponseDto> GetUserById(Guid userId)
         {
-            User existingUser = 
+            User existingUser =
                 await _userRepository.SelectUserByIdAsync(userId);
 
             if (existingUser is null)

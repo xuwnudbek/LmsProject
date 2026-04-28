@@ -7,4 +7,8 @@
         Teacher = 3,
         Student = 4,
     }
+
+    public static class RoleExtensions
+    {
+    }
 }

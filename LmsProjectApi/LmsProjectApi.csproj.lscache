@@ -55,7 +55,6 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 /warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
-Constants/UserRoles.cs
 Controllers/
  AccountsController.cs
  UsersController.cs
@@ -71,7 +70,7 @@ DTOs/
   UserCreateDto.cs
   UserResponseDto.cs
   UserUpdateDto.cs
-Enums/RoleType.cs
+Enums/UserRoles.cs
 Exceptions/
  BaseException.cs
  ConflictException.cs
@@ -87,6 +86,7 @@ Migrations/
  20260422150523_InitialMigration.Designer.cs
  AppDbContextModelSnapshot.cs
 Models/
+ Subjects/Subject.cs
  UserCredentials/UserCredential.cs
  Users/User.cs
  UserTokens/UserToken.cs
@@ -94,6 +94,9 @@ obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  LmsProjectApi.AssemblyInfo.cs
 Program.cs
+Repositories/Subjects/
+ ISubjectRepository.cs
+ SubjectRepository.cs
 Repositories/Users/
  IUserRepository.cs
  UserRepository.cs
