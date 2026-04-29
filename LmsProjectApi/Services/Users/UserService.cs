@@ -5,7 +5,6 @@ using LmsProjectApi.Exceptions;
 using LmsProjectApi.Helpers;
 using LmsProjectApi.Models.Users;
 using LmsProjectApi.Repositories.Users;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,13 +61,17 @@ namespace LmsProjectApi.Services.Users
             return _mapper.Map<UserResponseDto>(newUser);
         }
 
-        public async Task<List<UserResponseDto>> GetAllUsersAsync(UserRole authUserRole)
+        public async Task<List<UserResponseDto>> GetAllAsync(
+            UserRole authUserRole,
+            UserRole role)
         {
             IQueryable<User> users = _userRepository.SelectAllUsers();
 
             if (authUserRole is UserRole.Manager)
             {
-                users = users.Where(u => u.Role != UserRole.Admin);
+                users = users.Where(
+                    u => u.Role != UserRole.Admin &&
+                    u.Role == role);
             }
 
             return _mapper.Map<List<UserResponseDto>>(users);
@@ -98,9 +101,15 @@ namespace LmsProjectApi.Services.Users
             return _mapper.Map<UserResponseDto>(existingUser);
         }
 
-        public Task DeleteUserAsync(Guid userId)
+        public async Task DeleteUserAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            User existingUser =
+                await _userRepository.SelectUserByIdAsync(userId);
+
+            if (existingUser is null)
+                throw new NotFoundException("User not found.");
+
+            await _userRepository.DeleteUserAsync(userId);
         }
     }
 }

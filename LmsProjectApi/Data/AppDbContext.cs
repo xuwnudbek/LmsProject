@@ -23,6 +23,10 @@ namespace LmsProjectApi.Data
                 .HasKey(sl => new {sl.SubjectId, sl.LevelId});
 
             modelBuilder.Entity<SubjectLevel>()
+                .HasIndex(sl => new { sl.SubjectId, sl.OrderIndex })
+                .IsUnique();
+
+            modelBuilder.Entity<SubjectLevel>()
                 .HasOne(sl => sl.Subject)
                 .WithMany(s => s.SubjectLevels)
                 .HasForeignKey(sl => sl.SubjectId)

@@ -8,7 +8,7 @@ namespace LmsProjectApi.Repositories.Subjects
     public interface ISubjectRepository
     {
         Task<Subject> InsertAsync(Subject subject);
-        IQueryable<Subject> SelectAllAsync();
+        IQueryable<Subject> SelectAll();
         Task<Subject> SelectByIdAsync(Guid id);
         Task UpdateAsync();
         Task DeleteAsync(Subject subject);

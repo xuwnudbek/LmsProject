@@ -28,28 +28,26 @@ namespace LmsProjectApi.Services.Subjects
 
         public async Task<SubjectResponseDto> AddAsync(SubjectCreateDto dto)
         {
-            Subject subject =
-                await _subjectRepository.InsertAsync(_mapper.Map<Subject>(dto));
+            var subject = _mapper.Map<Subject>(dto);
 
-            Subject newSubject =
-                await _subjectRepository.SelectByIdAsync(subject.Id);
+            var insertedSubject = 
+                await _subjectRepository.InsertAsync(subject);
 
-            return _mapper.Map<SubjectResponseDto>(subject);
+            return _mapper.Map<SubjectResponseDto>(insertedSubject);
         }
 
-        public ICollection<SubjectSimpleDto> GetAll(bool withLevels = false)
+        public ICollection<SubjectResponseDto> GetAll(bool withLevels = false)
         {
-            var query = _subjectRepository.SelectAllAsync();
+            var query = _subjectRepository.SelectAll();
 
             if (withLevels)
             {
-                query = query.Include(s => s.SubjectLevels)
+                query = query
+                    .Include(s => s.SubjectLevels.OrderBy(sl => sl.OrderIndex))
                     .ThenInclude(sl => sl.Level);
             }
 
-            ICollection<Subject> subjects = query.ToList();
-
-            return _mapper.Map<ICollection<SubjectSimpleDto>>(subjects);
+            return _mapper.Map<ICollection<SubjectResponseDto>>(query.ToList());
         }
 
         public async Task<SubjectResponseDto> GetByIdAsync(Guid subjectId)

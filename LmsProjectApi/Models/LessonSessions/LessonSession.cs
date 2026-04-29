@@ -1,0 +1,23 @@
+﻿using LmsProjectApi.Enums;
+using LmsProjectApi.Models.Groups;
+using LmsProjectApi.Models.Lessons;
+using System;
+
+namespace LmsProjectApi.Models.LessonSessions
+{
+    public class LessonSession
+    {
+        public Guid Id { get; set; }
+        public LessonSessionStatus Status { get; set; }
+        public AttendanceStatus TeacherAttendanceStatus { get; set; }
+        public DateTime StartAt { get; set; }
+        public DateTime EndAt { get; set; }
+
+        public Guid LessonId { get; set; }
+        public Lesson Lesson { get; set; }
+
+        public Guid GroupId { get; set; }
+        public Group Group { get; set; }
+
+    }
+}

@@ -8,7 +8,7 @@ namespace LmsProjectApi.DTOs.SubjectLevel
     {
         public Guid LevelId { get; set; }
         public string LevelName { get; set; }
-        public int OrderIndex { get; }
+        public int OrderIndex { get; set; }
     }
 }
 

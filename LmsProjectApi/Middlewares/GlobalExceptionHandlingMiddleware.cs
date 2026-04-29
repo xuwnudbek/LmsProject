@@ -46,7 +46,7 @@ public class GlobalExceptionHandlingMiddleware
                 NotFoundException => exception.Message,
                 UnauthorizedException => exception.Message,
                 ValidationException => exception.Message,
-                _ => exception.Message
+                _ => exception.Message + " " + exception.InnerException?.Message
                 //_ => "Unknown exception occured."
             };
 

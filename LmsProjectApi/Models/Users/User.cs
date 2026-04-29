@@ -1,5 +1,7 @@
 ﻿using LmsProjectApi.Enums;
+using LmsProjectApi.Models.UserGroups;
 using System;
+using System.Collections.Generic;
 
 namespace LmsProjectApi.Models.Users
 {
@@ -17,5 +19,7 @@ namespace LmsProjectApi.Models.Users
         public DateTime UpdatedAt { get; set; }
         
         public UserRole Role { get; set; }
+
+        public ICollection<UserGroup> UserGroups { get; set; }
     }
 }

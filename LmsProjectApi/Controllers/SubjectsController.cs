@@ -29,33 +29,22 @@ namespace LmsProjectApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<SubjectSimpleDto>> GetAllAsync(
+        public ActionResult<IEnumerable<SubjectResponseDto>> GetAllAsync(
             [FromQuery] bool withLevels)
         {
-            IEnumerable<SubjectSimpleDto> subjects = 
+            IEnumerable<SubjectResponseDto> subjects = 
                 _subjectService.GetAll(withLevels);
 
             return Ok(subjects);
         }
-        
-        [HttpGet("with-levels")]
-        public ActionResult<IEnumerable<SubjectResponseDto>> GetAllWithLevelsAsync()
+
+        [HttpGet("{subjectId}")]
+        public async Task<ActionResult<SubjectResponseDto>> GetById(Guid subjectId)
         {
-            IEnumerable<SubjectResponseDto> subjects = 
-                _subjectService.GetAllWithLevels();
+            SubjectResponseDto subject = 
+                await _subjectService.GetByIdAsync(subjectId);
 
-            return Ok(subjects);
-        }
-
-        [HttpPut("{subjectId}")]
-        public async Task<ActionResult<SubjectResponseDto>> PutAsync(
-            Guid subjectId,
-            [FromBody] SubjectUpdateDto dto)
-        {
-            SubjectResponseDto updatedSubject = 
-                await _subjectService.UpdateAsync(subjectId, dto);
-
-            return Ok(updatedSubject);
+            return Ok(subject);
         }
     }
 }

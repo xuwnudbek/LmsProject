@@ -2,7 +2,6 @@ using LmsProjectApi.Data;
 using LmsProjectApi.Models.Subjects;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,19 +18,25 @@ namespace LmsProjectApi.Repositories.Subjects
 
         public async Task<Subject> InsertAsync(Subject subject)
         {
-            _dbContext.Subjects.Add(subject);
+            var entry = await _dbContext.Subjects.AddAsync(subject);
             await _dbContext.SaveChangesAsync();
 
-            return subject;
+            await _dbContext.Entry(entry.Entity)
+                .Collection(s => s.SubjectLevels)
+                .Query()
+                .Include(sl => sl.Level)
+                .LoadAsync();
+
+            return entry.Entity;
         }
 
-        public IQueryable<Subject> SelectAllAsync() =>
+        public IQueryable<Subject> SelectAll() =>
             _dbContext.Subjects
                 .AsNoTracking();
 
         public Task<Subject> SelectByIdAsync(Guid subjectId) =>
             _dbContext.Subjects
-                .Include(s => s.SubjectLevels)
+                .Include(s => s.SubjectLevels.OrderBy(sl => sl.OrderIndex))
                     .ThenInclude(sl => sl.Level)
                 .FirstOrDefaultAsync(s => s.Id == subjectId);
 

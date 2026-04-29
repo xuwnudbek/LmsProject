@@ -29,7 +29,7 @@ namespace LmsProjectApi.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin,Manager,Teacher,Student")]
         public async Task<ActionResult<UserResponseDto>> PostUserAsync(
             [FromBody] UserCreateDto dto)
         {
@@ -46,14 +46,14 @@ namespace LmsProjectApi.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,Manager")]
-        public async Task<List<UserResponseDto>> GetAllUsersAsync()
+        [Authorize(Roles = "Admin,Manager,Teacher,Student")]
+        public async Task<List<UserResponseDto>> GetAllUsersAsync([FromQuery] UserRole role)
         {
             var authUserRole =
                 Enum.Parse<UserRole>(User.FindFirst(ClaimTypes.Role).Value);
 
             List<UserResponseDto> users =
-                await _userService.GetAllUsersAsync(authUserRole);
+                await _userService.GetAllAsync(authUserRole, role);
 
             return users;
         }
