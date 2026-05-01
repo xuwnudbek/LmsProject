@@ -40,9 +40,8 @@ namespace LmsProjectApi
             // I. Database
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
-                string connectionString =
-                    builder.Configuration.GetConnectionString("DefaultConnection")
-                    ?? Environment.GetEnvironmentVariable("DATABASE_URL");
+                string connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+                    //builder.Configuration.GetConnectionString("DefaultConnection")
 
                 //options.UseSqlite(connectionString);
                 options.UseNpgsql(connectionString);
