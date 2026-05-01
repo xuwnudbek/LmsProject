@@ -31,7 +31,7 @@ namespace LmsProjectApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CourseResponseDto>>> GetAllAsync()
+        public ActionResult<IEnumerable<CourseResponseDto>> GetAllAsync()
         {
             IEnumerable<CourseResponseDto> courses = 
                 _courseService.GetAll();

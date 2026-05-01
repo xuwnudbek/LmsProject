@@ -22,6 +22,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System;
+using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,16 +41,9 @@ namespace LmsProjectApi
             // I. Database
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
-                var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-                string connectionString;
+                var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 
-                if (databaseUrl != null)
-                {
-                    var uri = new Uri(databaseUrl);
-                    var userInfo = uri.UserInfo.Split(':');
-                    connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require;Trust Server Certificate=true";
-                }
-                else
+                if (connectionString is null)
                 {
                     connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
                 }
