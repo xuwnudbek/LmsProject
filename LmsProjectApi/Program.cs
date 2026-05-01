@@ -15,6 +15,7 @@ using LmsProjectApi.Services.Subjects;
 using LmsProjectApi.Services.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -123,6 +124,8 @@ namespace LmsProjectApi
                 app.MapOpenApi();
                 app.MapScalarApiReference();
             }
+
+            app.MapGet("/", () => Results.Redirect("/scalar"));
 
             app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
