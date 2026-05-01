@@ -118,7 +118,7 @@ namespace LmsProjectApi
                 }
             }
 
-            // Configure the HTTP request pipeline.
+            // Configure the HTTP request pipeline3.
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
