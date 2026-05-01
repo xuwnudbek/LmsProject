@@ -125,7 +125,15 @@ namespace LmsProjectApi
                 app.MapScalarApiReference();
             }
 
-            app.MapGet("/", () => Results.Redirect("/scalar"));
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Path == "/")
+                {
+                    context.Response.Redirect("/scalar");
+                    return;
+                }
+                await next();
+            });
 
             app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
