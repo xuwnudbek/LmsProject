@@ -121,8 +121,15 @@ namespace LmsProjectApi
             // Configure the HTTP request pipeline3.
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
-                app.MapScalarApiReference();
+                try
+                {
+                    app.MapOpenApi();
+                    app.MapScalarApiReference();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"OpenApi error: {ex.Message}");
+                }
             }
 
             app.Use(async (context, next) =>
