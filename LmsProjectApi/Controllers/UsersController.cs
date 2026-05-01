@@ -52,7 +52,7 @@ namespace LmsProjectApi.Controllers
             //    Enum.Parse<UserRole>(User.FindFirst(ClaimTypes.Role).Value);
 
             ICollection<UserResponseDto> users =
-                await _userService.GetAllAsync(role);
+                _userService.GetAll(role);
 
             return users;
         }
