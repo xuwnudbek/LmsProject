@@ -56,7 +56,7 @@ namespace LmsProjectApi.Services.Users
             return _mapper.Map<UserResponseDto>(newUser);
         }
 
-        public async Task<ICollection<UserResponseDto>> GetAllAsync(
+        public ICollection<UserResponseDto> GetAll(
             UserRole role)
         {
             IQueryable<User> users = 
