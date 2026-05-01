@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LmsProjectApi.DTOs.User;
+using LmsProjectApi.DTOs.Users;
 using LmsProjectApi.Enums;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Helpers;
@@ -29,11 +29,6 @@ namespace LmsProjectApi.Services.Users
             UserCreateDto dto,
             UserRole authUserRole)
         {
-            if (authUserRole is UserRole.Manager && dto.Role is UserRole.Admin)
-            {
-                throw new ForbiddenException("Access denied");
-            }
-
             string normalizedUsername =
                 dto.Username.Trim().ToLowerInvariant();
 
@@ -46,7 +41,7 @@ namespace LmsProjectApi.Services.Users
 
             var user = _mapper.Map<User>(dto);
 
-            var now = DateTime.UtcNow;
+            var now = DateTimeOffset.UtcNow;
 
             user.Username = normalizedUsername;
             user.PasswordHash = HashingHelper.GetHash(dto.Password);
@@ -61,20 +56,21 @@ namespace LmsProjectApi.Services.Users
             return _mapper.Map<UserResponseDto>(newUser);
         }
 
-        public async Task<List<UserResponseDto>> GetAllAsync(
-            UserRole authUserRole,
+        public async Task<ICollection<UserResponseDto>> GetAllAsync(
             UserRole role)
         {
-            IQueryable<User> users = _userRepository.SelectAllUsers();
+            IQueryable<User> users = 
+                _userRepository.SelectAllUsers()
+                .Where(u => u.Role == role);
 
-            if (authUserRole is UserRole.Manager)
-            {
-                users = users.Where(
-                    u => u.Role != UserRole.Admin &&
-                    u.Role == role);
-            }
+            //if (authUserRole is UserRole.Manager)
+            //{
+            //    users = users.Where(
+            //        u => u.Role != UserRole.Admin &&
+            //        u.Role == role);
+            //}
 
-            return _mapper.Map<List<UserResponseDto>>(users);
+            return _mapper.Map<ICollection<UserResponseDto>>(users);
         }
 
         public async Task<UserResponseDto> GetUserById(Guid userId)

@@ -1,4 +1,4 @@
-﻿using LmsProjectApi.DTOs.Subject;
+﻿using LmsProjectApi.DTOs.Subjects;
 using LmsProjectApi.Services.Subjects;
 using Microsoft.AspNetCore.Mvc;
 using System;

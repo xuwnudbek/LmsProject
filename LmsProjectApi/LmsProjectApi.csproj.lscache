@@ -57,12 +57,34 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 [sourceFiles]
 Controllers/
  AccountsController.cs
+ LevelsController.cs
+ SubjectsController.cs
  UsersController.cs
 Data/
- AppDbContext.cs
- DataSeeder.cs
+ Context/AppDbContext.cs
+ ModelConfigurations/
+  SubjectLevelConfiguration.cs
+  UserGroupConfiguration.cs
+ Seeders/DataSeeder.cs
 DTOs/
  Auth/LoginDto.cs
+ Course/
+  CourseCreateDto.cs
+  CourseResponseDto.cs
+  CourseUpdateDto.cs
+ Level/
+  LevelCreateDto.cs
+  LevelResponseDto.cs
+  LevelUpdateDto.cs
+ Subject/
+  SubjectCreateDto.cs
+  SubjectResponseDto.cs
+  SubjectSimpleDto.cs
+  SubjectUpdateDto.cs
+ SubjectLevel/
+  SubjectLevelCreateDto.cs
+  SubjectLevelResponseDto.cs
+  SubjectLevelUpdateDto.cs
  User/
   ChangePasswordDto.cs
   ChangeRoleDto.cs
@@ -70,8 +92,12 @@ DTOs/
   UserCreateDto.cs
   UserResponseDto.cs
   UserUpdateDto.cs
-Enums/UserRoles.cs
+Enums/
+ AttendanceStatus.cs
+ LessonSessionStatus.cs
+ UserRole.cs
 Exceptions/
+ BadRequestException.cs
  BaseException.cs
  ConflictException.cs
  ForbiddenException.cs
@@ -79,21 +105,65 @@ Exceptions/
  UnauthorizedException.cs
  ValidationException.cs
 Helpers/HashingHelper.cs
-Mappings/UserProfile.cs
+Mappings/
+ LevelProfile.cs
+ SubjectLevelProfile.cs
+ SubjectProfile.cs
+ UserProfile.cs
 Middlewares/GlobalExceptionHandlingMiddleware.cs
 Migrations/
  20260422150523_InitialMigration.cs
  20260422150523_InitialMigration.Designer.cs
+ 20260427180804_AddSubjectsTable.cs
+ 20260427180804_AddSubjectsTable.Designer.cs
+ 20260428132532_UpdateCascadeDelete.cs
+ 20260428132532_UpdateCascadeDelete.Designer.cs
+ 20260428144439_AddTimestampFields.cs
+ 20260428144439_AddTimestampFields.Designer.cs
+ 20260428163812_AddUniqueIndexToSubjectLevelOrderIndex.cs
+ 20260428163812_AddUniqueIndexToSubjectLevelOrderIndex.Designer.cs
+ 20260430101104_Test.cs
+ 20260430101104_Test.Designer.cs
  AppDbContextModelSnapshot.cs
 Models/
+ Attendances/Attendance.cs
+ Courses/Course.cs
+ Groups/Group.cs
+ Lessons/Lesson.cs
+ LessonSessions/LessonSession.cs
+ Levels/Level.cs
+ Payments/Payment.cs
+ SubjectLevels/SubjectLevel.cs
  Subjects/Subject.cs
  UserCredentials/UserCredential.cs
+ UserGroups/UserGroup.cs
  Users/User.cs
  UserTokens/UserToken.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  LmsProjectApi.AssemblyInfo.cs
 Program.cs
+Repositories/Attendances/
+ AttendanceRepository.cs
+ IAttendanceRepository.cs
+Repositories/Courses/
+ CourseRepository.cs
+ ICourseRepository.cs
+Repositories/Groups/
+ GroupRepository.cs
+ IGroupRepository.cs
+Repositories/Lessons/
+ ILessonRepository.cs
+ LessonRepository.cs
+Repositories/LessonSessions/
+ ILessonSessionRepository.cs
+ LessonSessionRepository.cs
+Repositories/Levels/
+ ILevelRepository.cs
+ LevelRepository.cs
+Repositories/Payments/
+ IPaymentRepository.cs
+ PaymentRepository.cs
 Repositories/Subjects/
  ISubjectRepository.cs
  SubjectRepository.cs
@@ -103,12 +173,21 @@ Repositories/Users/
 Services/Accounts/
  AccountService.cs
  IAccountService.cs
+Services/Courses/
+ CourseService.cs
+ ICourseService.cs
+Services/Levels/
+ ILevelService.cs
+ LevelService.cs
+Services/Subjects/
+ ISubjectService.cs
+ SubjectService.cs
 Services/Users/
  IUserService.cs
  UserService.cs
 
 [metadataReferences]
-<DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.6/ref/net10.0/
+<DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.7/ref/net10.0/
  Microsoft.AspNetCore.Antiforgery.dll
  Microsoft.AspNetCore.Authentication.Abstractions.dll
  Microsoft.AspNetCore.Authentication.BearerToken.dll
@@ -249,7 +328,7 @@ Services/Users/
  System.Formats.Cbor.dll
  System.Security.Cryptography.Xml.dll
  System.Threading.RateLimiting.dll
-<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.6/ref/net10.0/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/ref/net10.0/
  Microsoft.CSharp.dll
  Microsoft.VisualBasic.Core.dll
  Microsoft.VisualBasic.dll
@@ -441,7 +520,7 @@ Services/Users/
  system.identitymodel.tokens.jwt/8.0.1/lib/net9.0/System.IdentityModel.Tokens.Jwt.dll
 
 [analyzerReferences]
-<DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.6/analyzers/dotnet/cs/
+<DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.7/analyzers/dotnet/cs/
  Microsoft.AspNetCore.App.Analyzers.dll
  Microsoft.AspNetCore.App.CodeFixes.dll
  Microsoft.AspNetCore.App.SourceGenerators.dll
@@ -449,21 +528,21 @@ Services/Users/
  Microsoft.Extensions.Logging.Generators.dll
  Microsoft.Extensions.Options.SourceGeneration.dll
  Microsoft.Extensions.Validation.ValidationsGenerator.dll
-<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.6/analyzers/dotnet/cs/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/analyzers/dotnet/cs/
  Microsoft.Interop.ComInterfaceGenerator.dll
  Microsoft.Interop.JavaScript.JSImportGenerator.dll
  Microsoft.Interop.LibraryImportGenerator.dll
  Microsoft.Interop.SourceGeneration.dll
  System.Text.Json.SourceGeneration.dll
  System.Text.RegularExpressions.Generator.dll
-<DOTNET>/sdk/10.0.202/Sdks/Microsoft.NET.Sdk.Razor/source-generators/
+<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk.Razor/source-generators/
  Microsoft.AspNetCore.Razor.Utilities.Shared.dll
  Microsoft.CodeAnalysis.Razor.Compiler.dll
  Microsoft.Extensions.ObjectPool.dll
-<DOTNET>/sdk/10.0.202/Sdks/Microsoft.NET.Sdk.Web/analyzers/cs/
+<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk.Web/analyzers/cs/
  Microsoft.AspNetCore.Analyzers.dll
  Microsoft.AspNetCore.Mvc.Analyzers.dll
-<DOTNET>/sdk/10.0.202/Sdks/Microsoft.NET.Sdk/analyzers/
+<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/
  Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
  Microsoft.CodeAnalysis.NetAnalyzers.dll
 <NUGET>/
@@ -474,5 +553,5 @@ Services/Users/
  microsoft.entityframeworkcore.analyzers/10.0.5/analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll
 
 [analyzerConfigFiles]
-<DOTNET>/sdk/10.0.202/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_default.globalconfig
+<DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_default.globalconfig
 obj/Debug/net10.0/LmsProjectApi.GeneratedMSBuildEditorConfig.editorconfig

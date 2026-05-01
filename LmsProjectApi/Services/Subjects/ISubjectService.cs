@@ -1,4 +1,4 @@
-﻿using LmsProjectApi.DTOs.Subject;
+﻿using LmsProjectApi.DTOs.Subjects;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

@@ -46,8 +46,9 @@ public class GlobalExceptionHandlingMiddleware
                 NotFoundException => exception.Message,
                 UnauthorizedException => exception.Message,
                 ValidationException => exception.Message,
-                _ => exception.Message + " " + exception.InnerException?.Message
-                //_ => "Unknown exception occured."
+                _ => exception.InnerException is null
+                ? exception.Message
+                : exception.InnerException.Message
             };
 
             context.Response.StatusCode = statusCode;

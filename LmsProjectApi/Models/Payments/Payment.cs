@@ -1,6 +1,6 @@
-﻿using LmsProjectApi.Models.Users;
+﻿using LmsProjectApi.Models.Groups;
+using LmsProjectApi.Models.Users;
 using System;
-using System.Text.RegularExpressions;
 
 namespace LmsProjectApi.Models.Payments
 {
@@ -10,8 +10,8 @@ namespace LmsProjectApi.Models.Payments
         public string Comment { get; set; }
         public int Amount { get; set; }
         public int DiscountAmount { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
 
         public Guid UserId { get; set; }
         public User User { get; set; }

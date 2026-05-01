@@ -1,4 +1,4 @@
-﻿using LmsProjectApi.DTOs.Level;
+﻿using LmsProjectApi.DTOs.Levels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

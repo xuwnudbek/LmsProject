@@ -1,8 +1,7 @@
-﻿using LmsProjectApi.DTOs.Level;
-using LmsProjectApi.DTOs.Subject;
-using LmsProjectApi.Models.Levels;
+﻿using LmsProjectApi.DTOs.Levels;
 using LmsProjectApi.Services.Levels;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -34,6 +33,15 @@ namespace LmsProjectApi.Controllers
                 _levelService.GetAll();
 
             return Ok(levels);
+        }
+
+        [HttpGet("{levelId}")]
+        public async Task<ActionResult<LevelResponseDto>> GetByIdAsync(Guid levelId)
+        {
+            LevelResponseDto level =
+                await _levelService.GetByIdAsync(levelId);
+
+            return Ok(level);
         }
     }
 }

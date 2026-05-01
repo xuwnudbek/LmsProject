@@ -1,4 +1,4 @@
-﻿using LmsProjectApi.Data;
+﻿using LmsProjectApi.Data.Context;
 using LmsProjectApi.Enums;
 using LmsProjectApi.Models.Users;
 using Microsoft.EntityFrameworkCore;

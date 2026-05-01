@@ -1,4 +1,4 @@
-﻿using LmsProjectApi.Data;
+﻿using LmsProjectApi.Data.Context;
 using LmsProjectApi.Models.Levels;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,10 +18,10 @@ namespace LmsProjectApi.Repositories.Levels
 
         public async Task<Level> InsertAsync(Level level)
         {
-            _dbContext.Levels.Add(level);
+            var entry = await _dbContext.Levels.AddAsync(level);
             await _dbContext.SaveChangesAsync();
 
-            return level;
+            return entry.Entity;
         }
 
         public IQueryable<Level> SelectAll()

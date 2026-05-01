@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LmsProjectApi.DTOs.User;
+using LmsProjectApi.DTOs.Users;
 using LmsProjectApi.Enums;
 using LmsProjectApi.Services.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -30,7 +30,7 @@ namespace LmsProjectApi.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,Manager,Teacher,Student")]
-        public async Task<ActionResult<UserResponseDto>> PostUserAsync(
+        public async Task<ActionResult<UserResponseDto>> CreateAsync(
             [FromBody] UserCreateDto dto)
         {
             var authUserRole =
@@ -46,14 +46,13 @@ namespace LmsProjectApi.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,Manager,Teacher,Student")]
-        public async Task<List<UserResponseDto>> GetAllUsersAsync([FromQuery] UserRole role)
+        public async Task<ICollection<UserResponseDto>> GetAllUsersAsync([FromQuery] UserRole role)
         {
-            var authUserRole =
-                Enum.Parse<UserRole>(User.FindFirst(ClaimTypes.Role).Value);
+            //var authUserRole =
+            //    Enum.Parse<UserRole>(User.FindFirst(ClaimTypes.Role).Value);
 
-            List<UserResponseDto> users =
-                await _userService.GetAllAsync(authUserRole, role);
+            ICollection<UserResponseDto> users =
+                await _userService.GetAllAsync(role);
 
             return users;
         }

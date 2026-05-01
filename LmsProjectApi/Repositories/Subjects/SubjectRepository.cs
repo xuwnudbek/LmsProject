@@ -1,4 +1,4 @@
-using LmsProjectApi.Data;
+using LmsProjectApi.Data.Context;
 using LmsProjectApi.Models.Subjects;
 using Microsoft.EntityFrameworkCore;
 using System;

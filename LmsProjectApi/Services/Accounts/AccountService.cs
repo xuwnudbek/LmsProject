@@ -61,7 +61,7 @@ namespace LmsProjectApi.Services.Accounts
                 new Claim(ClaimTypes.Role, user.Role.ToString()),
             };
 
-            DateTime expirationDate = DateTime.Now.AddMinutes(1440);
+            var expirationDate = DateTime.UtcNow.AddMinutes(1440);
 
             var securityToken = new JwtSecurityToken(
                 issuer: issuer,

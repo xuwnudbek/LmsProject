@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LmsProjectApi.DTOs.Level;
+using LmsProjectApi.DTOs.Levels;
 using LmsProjectApi.Models.Levels;
 
 namespace LmsProjectApi.Mappings

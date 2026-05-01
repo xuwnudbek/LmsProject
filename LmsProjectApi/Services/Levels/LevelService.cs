@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LmsProjectApi.DTOs.Level;
+using LmsProjectApi.DTOs.Levels;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Models.Levels;
 using LmsProjectApi.Repositories.Levels;

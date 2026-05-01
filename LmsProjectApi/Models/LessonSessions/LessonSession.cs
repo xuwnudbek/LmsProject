@@ -10,8 +10,8 @@ namespace LmsProjectApi.Models.LessonSessions
         public Guid Id { get; set; }
         public LessonSessionStatus Status { get; set; }
         public AttendanceStatus TeacherAttendanceStatus { get; set; }
-        public DateTime StartAt { get; set; }
-        public DateTime EndAt { get; set; }
+        public DateTimeOffset StartAt { get; set; }
+        public DateTimeOffset EndAt { get; set; }
 
         public Guid LessonId { get; set; }
         public Lesson Lesson { get; set; }

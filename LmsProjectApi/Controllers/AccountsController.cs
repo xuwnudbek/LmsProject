@@ -1,4 +1,4 @@
-﻿using LmsProjectApi.DTOs.User;
+﻿using LmsProjectApi.DTOs.Users;
 using LmsProjectApi.Models.UserCredentials;
 using LmsProjectApi.Models.UserTokens;
 using LmsProjectApi.Services.Accounts;

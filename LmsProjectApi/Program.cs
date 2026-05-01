@@ -1,9 +1,15 @@
-using LmsProjectApi.Data;
+using LmsProjectApi.Data.Context;
+using LmsProjectApi.Data.Seeders;
 using LmsProjectApi.Middlewares;
+using LmsProjectApi.Repositories.Attendances;
+using LmsProjectApi.Repositories.Courses;
+using LmsProjectApi.Repositories.Groups;
 using LmsProjectApi.Repositories.Levels;
 using LmsProjectApi.Repositories.Subjects;
 using LmsProjectApi.Repositories.Users;
 using LmsProjectApi.Services.Accounts;
+using LmsProjectApi.Services.Courses;
+using LmsProjectApi.Services.Groups;
 using LmsProjectApi.Services.Levels;
 using LmsProjectApi.Services.Subjects;
 using LmsProjectApi.Services.Users;
@@ -33,7 +39,8 @@ namespace LmsProjectApi
                 string connectionString =
                     builder.Configuration.GetConnectionString("DefaultConnection");
 
-                options.UseSqlite(connectionString);
+                //options.UseSqlite(connectionString);
+                options.UseNpgsql(connectionString);
             });
 
             // II. Auth Services
@@ -60,20 +67,27 @@ namespace LmsProjectApi
 
             // III. Custom Services
             // Repositories
-            builder.Services.AddTransient<IUserRepository, UserRepository>();
-            builder.Services.AddTransient<ISubjectRepository, SubjectRepository>();
-            builder.Services.AddTransient<ILevelRepository, LevelRepository>();
+
+            builder.Services.Scan(scan => scan
+                .FromAssemblyOf<IUserRepository>()
+                .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Repository")))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime()
+            );
 
             // Services
-            builder.Services.AddTransient<IUserService, UserService>();
-            builder.Services.AddTransient<IAccountService, AccountService>();
-            builder.Services.AddTransient<ISubjectService, SubjectService>();
-            builder.Services.AddTransient<ILevelService, LevelService>();
+            builder.Services.Scan(scan => scan
+                .FromAssemblyOf<IUserService>()
+                .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Service")))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime()
+            );
 
             // IV. Framework Services
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
             builder.Services.AddAutoMapper(cfg => { }, typeof(Program));
+
 
             // Build app
             var app = builder.Build();

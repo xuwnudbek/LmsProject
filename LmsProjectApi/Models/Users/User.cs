@@ -1,4 +1,5 @@
 ﻿using LmsProjectApi.Enums;
+using LmsProjectApi.Models.Courses;
 using LmsProjectApi.Models.UserGroups;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,12 @@ namespace LmsProjectApi.Models.Users
         public string  PasswordHash { get; set; }
         public bool  IsActive { get; set; }
         public string  ImageUrl { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
         
         public UserRole Role { get; set; }
 
-        public ICollection<UserGroup> UserGroups { get; set; }
+        public ICollection<UserGroup> UserGroups { get; set; } = new HashSet<UserGroup>();
+        public ICollection<Course> Courses { get; set; } = new HashSet<Course>();
     }
 }

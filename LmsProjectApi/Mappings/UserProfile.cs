@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LmsProjectApi.DTOs.User;
+using LmsProjectApi.DTOs.Users;
 using LmsProjectApi.Models.Users;
 
 namespace LmsProjectApi.Mappings
