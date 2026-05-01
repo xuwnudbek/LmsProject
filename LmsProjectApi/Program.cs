@@ -124,7 +124,10 @@ namespace LmsProjectApi
                 try
                 {
                     app.MapOpenApi();
-                    app.MapScalarApiReference();
+                    app.MapScalarApiReference(option =>
+                    {
+                        option.WithBaseServerUrl("https://lmsproject-7s5u.onrender.com");
+                    });
                 }
                 catch (Exception ex)
                 {
