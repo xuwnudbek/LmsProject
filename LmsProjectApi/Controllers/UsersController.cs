@@ -46,7 +46,7 @@ namespace LmsProjectApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ICollection<UserResponseDto>> GetAllUsersAsync([FromQuery] UserRole role)
+        public ICollection<UserResponseDto> GetAllUsersAsync([FromQuery] UserRole role)
         {
             //var authUserRole =
             //    Enum.Parse<UserRole>(User.FindFirst(ClaimTypes.Role).Value);

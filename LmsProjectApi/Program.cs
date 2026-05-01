@@ -106,7 +106,15 @@ namespace LmsProjectApi
             {
                 var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-                await DataSeeder.SeedUsers(context);
+                try
+                {
+                    await context.Database.MigrateAsync();
+                    await DataSeeder.SeedUsers(context);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Migration/Seed error: {ex.Message}");
+                }
             }
 
             // Configure the HTTP request pipeline.
