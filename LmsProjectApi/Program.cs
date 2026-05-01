@@ -21,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,12 +33,16 @@ namespace LmsProjectApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Add Environment Variables
+            builder.Configuration.AddEnvironmentVariables();
+
             // ADD SERVICES TO THE CONTAINER.
             // I. Database
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
                 string connectionString =
-                    builder.Configuration.GetConnectionString("DefaultConnection");
+                    builder.Configuration.GetConnectionString("DefaultConnection")
+                    ?? Environment.GetEnvironmentVariable("DATABASE_URL");
 
                 //options.UseSqlite(connectionString);
                 options.UseNpgsql(connectionString);
@@ -84,6 +89,7 @@ namespace LmsProjectApi
             );
 
             // IV. Framework Services
+            builder.Configuration.AddEnvironmentVariables();
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
             builder.Services.AddAutoMapper(cfg => { }, typeof(Program));
