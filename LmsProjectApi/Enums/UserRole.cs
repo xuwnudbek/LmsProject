@@ -2,9 +2,9 @@
 {
     public enum UserRole
     {
-        Admin = 1,
-        Manager = 2,
-        Teacher = 3,
-        Student = 4,
+        Admin = 0,
+        Manager = 1,
+        Teacher = 2,
+        Student = 3,
     }
 }

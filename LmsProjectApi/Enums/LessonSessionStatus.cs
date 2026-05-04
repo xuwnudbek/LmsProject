@@ -2,9 +2,9 @@
 {
     public enum LessonSessionStatus
     {
-        Scheduled = 1,
-        OnGoing = 2,
-        Completed = 3,
-        Cancelled = 4
+        Scheduled = 0,
+        OnGoing = 1,
+        Completed = 2,
+        Cancelled = 3
     }
 }
