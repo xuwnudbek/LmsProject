@@ -86,13 +86,9 @@ namespace LmsProjectApi
             {
                 options.AddPolicy("AllowFrontend", policy =>
                 {
-                    policy.WithOrigins(
-                            "http://localhost:7070",
-                            builder.Configuration["FrontendUrl"]
-                        )
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
+                    policy.AllowAnyOrigin()
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
                 });
             });
 
