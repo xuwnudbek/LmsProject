@@ -1,4 +1,6 @@
-﻿using LmsProjectApi.Models.Groups;
+﻿using LmsProjectApi.DTOs.Groups;
+using LmsProjectApi.DTOs.Users;
+using LmsProjectApi.Models.Groups;
 using LmsProjectApi.Models.Users;
 using System;
 
@@ -10,7 +12,7 @@ namespace LmsProjectApi.DTOs.Payments
         public int Amount { get; set; }
         public int DiscountAmount { get; set; }
 
-        public User User { get; set; }
-        public Group Group { get; set; }
+        public UserResponseDto User { get; set; }
+        public GroupResponseDto Group { get; set; }
     }
 }

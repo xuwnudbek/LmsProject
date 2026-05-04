@@ -1,4 +1,6 @@
-﻿using LmsProjectApi.Enums;
+﻿using LmsProjectApi.DTOs.Groups;
+using LmsProjectApi.DTOs.Lessons;
+using LmsProjectApi.Enums;
 using LmsProjectApi.Models.Groups;
 using LmsProjectApi.Models.Lessons;
 using System;
@@ -12,7 +14,7 @@ namespace LmsProjectApi.DTOs.LessonSessions
         public DateTimeOffset StartAt { get; set; }
         public DateTimeOffset EndAt { get; set; }
 
-        public Lesson Lesson { get; set; }
-        public Group Group { get; set; }
+        public LessonResponseDto Lesson { get; set; }
+        public GroupResponseDto Group { get; set; }
     }
 }

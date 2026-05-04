@@ -1,3 +1,4 @@
+using FluentValidation;
 using LmsProjectApi.Data.Context;
 using LmsProjectApi.Data.Seeders;
 using LmsProjectApi.Middlewares;
@@ -13,8 +14,8 @@ using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using FluentValidation;
 
 
 namespace LmsProjectApi
@@ -24,6 +25,9 @@ namespace LmsProjectApi
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            
+            // Add Environments
+            builder.Configuration.AddEnvironmentVariables();
 
             // ADD SERVICES TO THE CONTAINER.
             // I. Database
@@ -78,9 +82,15 @@ namespace LmsProjectApi
 
             // IV. Framework Services
             builder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
-            builder.Configuration.AddEnvironmentVariables();
-            builder.Services.AddControllers();
+            
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                });
+
             builder.Services.AddOpenApi();
+            
             builder.Services.AddAutoMapper(cfg => { }, typeof(Program));
             builder.Services.AddCors(options =>
             {
@@ -91,7 +101,6 @@ namespace LmsProjectApi
                       .AllowAnyMethod();
                 });
             });
-
 
             // Build app
             var app = builder.Build();
@@ -114,17 +123,22 @@ namespace LmsProjectApi
 
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
-                app.MapScalarApiReference(option =>
+                try
                 {
-                    option.Servers =
-                    [
-                        new ScalarServer(builder.Configuration["ServerUrl"]),
-                        new ScalarServer("https://localhost:7270")
-                    ];
-                });
+                    app.MapOpenApi();
+                    app.MapScalarApiReference(option =>
+                    {
+                        option.Servers =
+                        [
+                            new ScalarServer(builder.Configuration["ServerUrl"]),
+                            new ScalarServer("https://localhost:7270")
+                        ];
+                    });
+                }catch (Exception ex)
+                {
+                    Console.WriteLine($"OpenApi/Scalar: {ex.Message}");
+                }
             }
-
 
             // Redirect to Scalar
             app.Use(async (context, next) =>
@@ -136,7 +150,6 @@ namespace LmsProjectApi
                 }
                 await next();
             });
-
 
             app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
