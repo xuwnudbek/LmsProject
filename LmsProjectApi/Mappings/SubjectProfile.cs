@@ -11,7 +11,7 @@ namespace LmsProjectApi.Mappings
         {
             CreateMap<SubjectCreateDto, Subject>()
                 .ForMember(s => s.SubjectLevels,
-                    opt => opt.MapFrom(src => src.Levels));
+                    opt => opt.Ignore());
 
             CreateMap<Subject, SubjectResponseDto>()
                 .ForMember(srd => srd.Levels,

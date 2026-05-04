@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using LmsProjectApi.Models.Levels;
+using LmsProjectApi.DTOs.Levels;
 
 namespace LmsProjectApi.Validators.Levels
 {
-    public class LevelUpdateDtoValidator : AbstractValidator<Level>
+    public class LevelUpdateDtoValidator : AbstractValidator<LevelUpdateDto>
     {
         public LevelUpdateDtoValidator()
         {

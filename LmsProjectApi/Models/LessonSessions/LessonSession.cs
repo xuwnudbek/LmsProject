@@ -1,13 +1,13 @@
 ﻿using LmsProjectApi.Enums;
+using LmsProjectApi.Models.Base;
 using LmsProjectApi.Models.Groups;
 using LmsProjectApi.Models.Lessons;
 using System;
 
 namespace LmsProjectApi.Models.LessonSessions
 {
-    public class LessonSession
+    public class LessonSession : BaseEntity
     {
-        public Guid Id { get; set; }
         public LessonSessionStatus Status { get; set; }
         public AttendanceStatus TeacherAttendanceStatus { get; set; }
         public DateTimeOffset StartAt { get; set; }

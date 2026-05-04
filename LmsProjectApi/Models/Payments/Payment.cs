@@ -1,18 +1,16 @@
-﻿using LmsProjectApi.Models.Groups;
+﻿using LmsProjectApi.Models.Base;
+using LmsProjectApi.Models.Groups;
 using LmsProjectApi.Models.Users;
 using System;
 
 namespace LmsProjectApi.Models.Payments
 {
-    public class Payment
-    {
-        public Guid Id { get; set; }
+    public class Payment : BaseEntity
+    { 
         public string Comment { get; set; }
         public int Amount { get; set; }
         public int DiscountAmount { get; set; }
-        public DateTimeOffset CreatedAt { get; set; }
-        public DateTimeOffset UpdatedAt { get; set; }
-
+        
         public Guid UserId { get; set; }
         public User User { get; set; }
 

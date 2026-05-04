@@ -30,9 +30,9 @@ namespace LmsProjectApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ICollection<GroupResponseDto>> GetAll()
+        public ActionResult<ICollection<GroupSimpleDto>> GetAll()
         {
-            ICollection<GroupResponseDto> gruops =
+            ICollection<GroupSimpleDto> gruops =
                 _groupService.GetAll();
 
             return Ok(gruops);

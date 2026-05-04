@@ -1,4 +1,5 @@
 ﻿using LmsProjectApi.Models.Attendances;
+using LmsProjectApi.Models.Base;
 using LmsProjectApi.Models.Courses;
 using LmsProjectApi.Models.Groups;
 using LmsProjectApi.Models.Lessons;
@@ -10,6 +11,9 @@ using LmsProjectApi.Models.Subjects;
 using LmsProjectApi.Models.UserGroups;
 using LmsProjectApi.Models.Users;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LmsProjectApi.Data.Context
 {
@@ -39,6 +43,22 @@ namespace LmsProjectApi.Data.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker.Entries<BaseEntity>();
+
+            foreach (var entry in entries)
+            {
+                if (entry.State == EntityState.Added)
+                    entry.Entity.CreatedAt = DateTimeOffset.UtcNow;
+
+                if (entry.State == EntityState.Modified)
+                    entry.Entity.UpdatedAt = DateTimeOffset.UtcNow;
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

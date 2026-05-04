@@ -2,6 +2,7 @@
 using LmsProjectApi.Models.Lessons;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,7 +22,16 @@ namespace LmsProjectApi.Repositories.Lessons
             var entry = await _dbContext.Lessons.AddAsync(lesson);
             await _dbContext.SaveChangesAsync();
 
-            return entry.Entity;
+            return await SelectByIdAsync(entry.Entity.Id);
+        }
+        
+        public async Task<IEnumerable<Lesson>> InsertRangeAsync(
+            IEnumerable<Lesson> lessons)
+        {
+            await _dbContext.Lessons.AddRangeAsync(lessons);
+            await _dbContext.SaveChangesAsync();
+
+            return lessons;
         }
 
         public IQueryable<Lesson> SelectAll()
@@ -32,8 +42,8 @@ namespace LmsProjectApi.Repositories.Lessons
 
         public Task<Lesson> SelectByIdAsync(Guid lessonId)
         {
-            return _dbContext.Lessons.
-                FirstOrDefaultAsync(l => l.Id == lessonId);
+            return _dbContext.Lessons
+                .FirstOrDefaultAsync(l => l.Id == lessonId);
         }
 
         public async Task UpdateAsync()

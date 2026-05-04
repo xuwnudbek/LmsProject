@@ -21,13 +21,7 @@ namespace LmsProjectApi.Repositories.Subjects
             var entry = await _dbContext.Subjects.AddAsync(subject);
             await _dbContext.SaveChangesAsync();
 
-            await _dbContext.Entry(entry.Entity)
-                .Collection(s => s.SubjectLevels)
-                .Query()
-                .Include(sl => sl.Level)
-                .LoadAsync();
-
-            return entry.Entity;
+            return await SelectByIdAsync(entry.Entity.Id);
         }
 
         public IQueryable<Subject> SelectAll() =>

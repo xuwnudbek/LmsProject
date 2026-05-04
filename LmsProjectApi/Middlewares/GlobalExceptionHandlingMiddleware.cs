@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using LmsProjectApi.Exceptions;
 using Microsoft.AspNetCore.Http;
@@ -39,17 +40,25 @@ public class GlobalExceptionHandlingMiddleware
                 _ => StatusCodes.Status500InternalServerError
             };
 
-            var errorMessage = exception switch
+            dynamic errorMessage;
+
+            if (exception is ValidationException exc)
             {
-                ConflictException => exception.Message,
-                ForbiddenException => exception.Message,
-                NotFoundException => exception.Message,
-                UnauthorizedException => exception.Message,
-                ValidationException => exception.Message,
-                _ => exception.InnerException is null
-                ? exception.Message
-                : exception.InnerException.Message
-            };
+                errorMessage = exc.Errors;
+            }
+            else
+            {
+                errorMessage = exception switch
+                {
+                    ConflictException => exception.Message,
+                    ForbiddenException => exception.Message,
+                    NotFoundException => exception.Message,
+                    UnauthorizedException => exception.Message,
+                    _ => exception.InnerException is null
+                    ? exception.Message
+                    : exception.InnerException.Message
+                };
+            }
 
             context.Response.StatusCode = statusCode;
             context.Response.ContentType = "application/json";

@@ -37,6 +37,9 @@ namespace LmsProjectApi.Repositories.Groups
             return _dbContext.Groups
                 .Include(g => g.Level)
                 .Include(g => g.Course)
+                    .ThenInclude(c => c.Subject)
+                .Include(g => g.Course)
+                    .ThenInclude(c => c.User)
                 .FirstOrDefaultAsync(g => g.Id == groupId);
         }
 

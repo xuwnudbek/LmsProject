@@ -14,7 +14,8 @@ namespace LmsProjectApi.Data.ModelConfigurations
                 .IsRequired()
                 .HasDefaultValue(0);
 
-            builder.HasIndex(sl => new { sl.SubjectId, sl.OrderIndex }).IsUnique();
+            builder.HasIndex(sl => new { sl.SubjectId, sl.OrderIndex })
+                .IsUnique();
 
 
             builder.HasOne(sl => sl.Subject)

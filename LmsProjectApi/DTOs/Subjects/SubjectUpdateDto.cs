@@ -1,6 +1,6 @@
 ﻿using LmsProjectApi.DTOs.SubjectLevel;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace LmsProjectApi.DTOs.Subjects
 {
@@ -8,6 +8,6 @@ namespace LmsProjectApi.DTOs.Subjects
     {
         public string Name { get; set; }
         public bool HasLevel { get; set; }
-        public ICollection<SubjectLevelUpdateDto> Levels { get; set; }
+        public ICollection<Guid> Levels { get; set; }
     }
 }

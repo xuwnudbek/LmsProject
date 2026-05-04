@@ -26,8 +26,7 @@ namespace LmsProjectApi.Services.Users
         }
 
         public async Task<UserResponseDto> AddUserAsync(
-            UserCreateDto dto,
-            UserRole authUserRole)
+            UserCreateDto dto)
         {
             string normalizedUsername =
                 dto.Username.Trim().ToLowerInvariant();
@@ -62,13 +61,6 @@ namespace LmsProjectApi.Services.Users
             IQueryable<User> users = 
                 _userRepository.SelectAllUsers()
                 .Where(u => u.Role == role);
-
-            //if (authUserRole is UserRole.Manager)
-            //{
-            //    users = users.Where(
-            //        u => u.Role != UserRole.Admin &&
-            //        u.Role == role);
-            //}
 
             return _mapper.Map<ICollection<UserResponseDto>>(users);
         }

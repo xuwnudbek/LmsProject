@@ -8,7 +8,7 @@ namespace LmsProjectApi.Services.Users
 {
     public interface IUserService
     {
-        Task<UserResponseDto> AddUserAsync(UserCreateDto dto, UserRole authUserRole);
+        Task<UserResponseDto> AddUserAsync(UserCreateDto dto);
         ICollection<UserResponseDto> GetAll(UserRole role);
         Task<UserResponseDto> GetUserById(Guid userId);
         Task<UserResponseDto> UpdateUserAsync(Guid userId, UserUpdateDto dto);

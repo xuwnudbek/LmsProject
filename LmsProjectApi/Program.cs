@@ -1,21 +1,10 @@
 using LmsProjectApi.Data.Context;
 using LmsProjectApi.Data.Seeders;
 using LmsProjectApi.Middlewares;
-using LmsProjectApi.Repositories.Attendances;
-using LmsProjectApi.Repositories.Courses;
-using LmsProjectApi.Repositories.Groups;
-using LmsProjectApi.Repositories.Levels;
-using LmsProjectApi.Repositories.Subjects;
 using LmsProjectApi.Repositories.Users;
-using LmsProjectApi.Services.Accounts;
-using LmsProjectApi.Services.Courses;
-using LmsProjectApi.Services.Groups;
-using LmsProjectApi.Services.Levels;
-using LmsProjectApi.Services.Subjects;
 using LmsProjectApi.Services.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,9 +12,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System;
-using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
+
 
 namespace LmsProjectApi
 {
@@ -35,19 +25,13 @@ namespace LmsProjectApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add Environment Variables
-            builder.Configuration.AddEnvironmentVariables();
-
             // ADD SERVICES TO THE CONTAINER.
             // I. Database
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
                 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 
-                if (connectionString is null)
-                {
-                    connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-                }
+                connectionString ??= builder.Configuration.GetConnectionString("DefaultConnection");
 
                 options.UseNpgsql(connectionString);
             });
@@ -74,17 +58,16 @@ namespace LmsProjectApi
                 });
             builder.Services.AddAuthorization();
 
-            // III. Custom Services
-            // Repositories
 
+            // III. Custom Services
+
+            // Services & Repositories
             builder.Services.Scan(scan => scan
                 .FromAssemblyOf<IUserRepository>()
                 .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Repository")))
                 .AsImplementedInterfaces()
                 .WithScopedLifetime()
             );
-
-            // Services
             builder.Services.Scan(scan => scan
                 .FromAssemblyOf<IUserService>()
                 .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Service")))
@@ -92,7 +75,9 @@ namespace LmsProjectApi
                 .WithScopedLifetime()
             );
 
+
             // IV. Framework Services
+            builder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
             builder.Configuration.AddEnvironmentVariables();
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
@@ -118,26 +103,20 @@ namespace LmsProjectApi
                 }
             }
 
-            // Configure the HTTP request pipeline3.
             if (app.Environment.IsDevelopment())
             {
-                try
+                app.MapOpenApi();
+                app.MapScalarApiReference(option =>
                 {
-                    app.MapOpenApi();
-                    app.MapScalarApiReference(option =>
-                    {
-                        option.Servers = new[]
-                        {
-                            new ScalarServer("https://lmsproject-7s5u.onrender.com")
-                        };
-                    });
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"OpenApi error: {ex.Message}");
-                }
+                    option.Servers =
+                    [
+                        new ScalarServer(builder.Configuration["ServerUrl"]),
+                        new ScalarServer("https://localhost:7270")
+                    ];
+                });
             }
 
+            // Redirect to Scalar
             app.Use(async (context, next) =>
             {
                 if (context.Request.Path == "/")

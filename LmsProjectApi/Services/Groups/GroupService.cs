@@ -35,12 +35,15 @@ namespace LmsProjectApi.Services.Groups
             return _mapper.Map<GroupResponseDto>(inserted);
         }
 
-        public ICollection<GroupResponseDto> GetAll()
+        public ICollection<GroupSimpleDto> GetAll()
         {
             ICollection<Group> groups = 
-                _groupRepository.SelectAll().ToList();
+                _groupRepository
+                    .SelectAll()
+                    .OrderBy(g => g.CreatedAt)
+                    .ToList();
 
-            return _mapper.Map<ICollection<GroupResponseDto>>(groups);
+            return _mapper.Map<ICollection<GroupSimpleDto>>(groups);
         }
 
         public async Task<GroupResponseDto> GetByIdAsync(Guid groupId)

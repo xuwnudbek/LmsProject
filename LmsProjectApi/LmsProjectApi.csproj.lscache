@@ -39,7 +39,7 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 /define:TRACE;DEBUG;NET;NET10_0;NETCOREAPP;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NET10_0_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NETCOREAPP1_1_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NETCOREAPP2_1_OR_GREATER;NETCOREAPP2_2_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER
 /highentropyva+
 /nullable:disable
-/features:"InterceptorsNamespaces=;Microsoft.AspNetCore.OpenApi.Generated;;Microsoft.Extensions.Validation.Generated"
+/features:"InterceptorsNamespaces=;Microsoft.Extensions.Validation.Generated"
 /debug+
 /debug:portable
 /filealign:512
@@ -57,35 +57,46 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 [sourceFiles]
 Controllers/
  AccountsController.cs
+ CoursesController.cs
+ GroupsController.cs
  LevelsController.cs
  SubjectsController.cs
  UsersController.cs
 Data/
  Context/AppDbContext.cs
  ModelConfigurations/
+  CourseConfiguration.cs
+  LevelConfiguration.cs
   SubjectLevelConfiguration.cs
+  UserConfiguration.cs
   UserGroupConfiguration.cs
  Seeders/DataSeeder.cs
 DTOs/
  Auth/LoginDto.cs
- Course/
+ Courses/
   CourseCreateDto.cs
   CourseResponseDto.cs
   CourseUpdateDto.cs
- Level/
+ Groups/
+  GroupCreateDto.cs
+  GroupResponseDto.cs
+  GroupSimpleDto.cs
+  GroupUpdateDto.cs
+ Levels/
   LevelCreateDto.cs
   LevelResponseDto.cs
   LevelUpdateDto.cs
- Subject/
+ SubjectLevels/
+  SubjectLevelCreateDto.cs
+  SubjectLevelResponseDto.cs
+  SubjectLevelUpdateDto.cs
+ Subjects/
   SubjectCreateDto.cs
   SubjectResponseDto.cs
   SubjectSimpleDto.cs
   SubjectUpdateDto.cs
- SubjectLevel/
-  SubjectLevelCreateDto.cs
-  SubjectLevelResponseDto.cs
-  SubjectLevelUpdateDto.cs
- User/
+ UserGroups/UserGroupResponseDto.cs
+ Users/
   ChangePasswordDto.cs
   ChangeRoleDto.cs
   ChangeStatusDto.cs
@@ -106,24 +117,22 @@ Exceptions/
  ValidationException.cs
 Helpers/HashingHelper.cs
 Mappings/
+ CourseProfile.cs
+ GroupProfile.cs
  LevelProfile.cs
  SubjectLevelProfile.cs
  SubjectProfile.cs
  UserProfile.cs
 Middlewares/GlobalExceptionHandlingMiddleware.cs
 Migrations/
- 20260422150523_InitialMigration.cs
- 20260422150523_InitialMigration.Designer.cs
- 20260427180804_AddSubjectsTable.cs
- 20260427180804_AddSubjectsTable.Designer.cs
- 20260428132532_UpdateCascadeDelete.cs
- 20260428132532_UpdateCascadeDelete.Designer.cs
- 20260428144439_AddTimestampFields.cs
- 20260428144439_AddTimestampFields.Designer.cs
- 20260428163812_AddUniqueIndexToSubjectLevelOrderIndex.cs
- 20260428163812_AddUniqueIndexToSubjectLevelOrderIndex.Designer.cs
- 20260430101104_Test.cs
- 20260430101104_Test.Designer.cs
+ 20260501154729_InitialPg.cs
+ 20260501154729_InitialPg.Designer.cs
+ 20260501162335_AddLevelConfiguration.cs
+ 20260501162335_AddLevelConfiguration.Designer.cs
+ 20260501180040_AddIndexToCourse.cs
+ 20260501180040_AddIndexToCourse.Designer.cs
+ 20260501185523_ModifyLevelConfiguration.cs
+ 20260501185523_ModifyLevelConfiguration.Designer.cs
  AppDbContextModelSnapshot.cs
 Models/
  Attendances/Attendance.cs
@@ -176,6 +185,9 @@ Services/Accounts/
 Services/Courses/
  CourseService.cs
  ICourseService.cs
+Services/Groups/
+ GroupService.cs
+ IGroupService.cs
 Services/Levels/
  ILevelService.cs
  LevelService.cs
@@ -185,6 +197,12 @@ Services/Subjects/
 Services/Users/
  IUserService.cs
  UserService.cs
+Validators/Courses/
+ CourseCreateDtoValidator.cs
+ CourseUpdateDtoValidator.cs
+Validators/Levels/
+ LevelCreateDtoValidator.cs
+ LevelUpdateDtoValidator.cs
 
 [metadataReferences]
 <DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.7/ref/net10.0/
@@ -498,22 +516,26 @@ Services/Users/
  WindowsBase.dll
 <NUGET>/
  automapper/16.1.1/lib/net10.0/AutoMapper.dll
- microsoft.aspnetcore.authentication.jwtbearer/10.0.5/lib/net10.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
- microsoft.aspnetcore.openapi/10.0.5/lib/net10.0/Microsoft.AspNetCore.OpenApi.dll
- microsoft.data.sqlite.core/10.0.5/lib/net8.0/Microsoft.Data.Sqlite.dll
- microsoft.entityframeworkcore.abstractions/10.0.5/lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll
- microsoft.entityframeworkcore.relational/10.0.5/lib/net10.0/Microsoft.EntityFrameworkCore.Relational.dll
- microsoft.entityframeworkcore.sqlite.core/10.0.5/lib/net10.0/Microsoft.EntityFrameworkCore.Sqlite.dll
- microsoft.entityframeworkcore/10.0.5/lib/net10.0/Microsoft.EntityFrameworkCore.dll
- microsoft.extensions.dependencymodel/10.0.5/lib/net10.0/Microsoft.Extensions.DependencyModel.dll
+ fluentvalidation/12.1.1/lib/net8.0/FluentValidation.dll
+ microsoft.aspnetcore.authentication.jwtbearer/10.0.7/lib/net10.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+ microsoft.aspnetcore.openapi/9.0.0/lib/net9.0/Microsoft.AspNetCore.OpenApi.dll
+ microsoft.data.sqlite.core/10.0.7/lib/net8.0/Microsoft.Data.Sqlite.dll
+ microsoft.entityframeworkcore.abstractions/10.0.7/lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+ microsoft.entityframeworkcore.relational/10.0.7/lib/net10.0/Microsoft.EntityFrameworkCore.Relational.dll
+ microsoft.entityframeworkcore.sqlite.core/10.0.7/lib/net10.0/Microsoft.EntityFrameworkCore.Sqlite.dll
+ microsoft.entityframeworkcore/10.0.7/lib/net10.0/Microsoft.EntityFrameworkCore.dll
+ microsoft.extensions.dependencymodel/10.0.7/lib/net10.0/Microsoft.Extensions.DependencyModel.dll
  microsoft.identitymodel.abstractions/8.14.0/lib/net9.0/Microsoft.IdentityModel.Abstractions.dll
  microsoft.identitymodel.jsonwebtokens/8.14.0/lib/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll
  microsoft.identitymodel.logging/8.14.0/lib/net9.0/Microsoft.IdentityModel.Logging.dll
  microsoft.identitymodel.protocols.openidconnect/8.0.1/lib/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
  microsoft.identitymodel.protocols/8.0.1/lib/net9.0/Microsoft.IdentityModel.Protocols.dll
  microsoft.identitymodel.tokens/8.14.0/lib/net9.0/Microsoft.IdentityModel.Tokens.dll
- microsoft.openapi/2.0.0/lib/net8.0/Microsoft.OpenApi.dll
- scalar.aspnetcore/2.14.1/lib/net10.0/Scalar.AspNetCore.dll
+ microsoft.openapi/1.6.17/lib/netstandard2.0/Microsoft.OpenApi.dll
+ npgsql.entityframeworkcore.postgresql/10.0.1/lib/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
+ npgsql/10.0.2/lib/net10.0/Npgsql.dll
+ scalar.aspnetcore/2.14.9/lib/net10.0/Scalar.AspNetCore.dll
+ scrutor/7.0.0/lib/net10.0/Scrutor.dll
  sqlitepclraw.bundle_e_sqlite3/2.1.11/lib/netstandard2.0/SQLitePCLRaw.batteries_v2.dll
  sqlitepclraw.core/2.1.11/lib/netstandard2.0/SQLitePCLRaw.core.dll
  sqlitepclraw.provider.e_sqlite3/2.1.11/lib/net6.0/SQLitePCLRaw.provider.e_sqlite3.dll
@@ -545,12 +567,10 @@ Services/Users/
 <DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/
  Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
  Microsoft.CodeAnalysis.NetAnalyzers.dll
-<NUGET>/
- microsoft.aspnetcore.openapi/10.0.5/analyzers/dotnet/cs/Microsoft.AspNetCore.OpenApi.SourceGenerators.dll
- microsoft.codeanalysis.analyzers/3.11.0/analyzers/dotnet/cs/
-  Microsoft.CodeAnalysis.Analyzers.dll
-  Microsoft.CodeAnalysis.CSharp.Analyzers.dll
- microsoft.entityframeworkcore.analyzers/10.0.5/analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll
+<NUGET>/microsoft.codeanalysis.analyzers/3.3.3/analyzers/dotnet/cs/
+ Microsoft.CodeAnalysis.Analyzers.dll
+ Microsoft.CodeAnalysis.CSharp.Analyzers.dll
+<NUGET>/microsoft.entityframeworkcore.analyzers/10.0.7/analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll
 
 [analyzerConfigFiles]
 <DOTNET>/sdk/10.0.203/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_default.globalconfig

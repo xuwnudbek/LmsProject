@@ -43,5 +43,24 @@ namespace LmsProjectApi.Controllers
 
             return Ok(level);
         }
+
+        [HttpPut("{levelId}")]
+        public async Task<ActionResult<LevelResponseDto>> UpdateAsync(
+            Guid levelId,
+            [FromBody] LevelUpdateDto dto)
+        {
+            LevelResponseDto updated =
+                await _levelService.UpdateAsync(levelId, dto);
+
+            return Ok(updated);
+        }
+
+        [HttpDelete("{levelId}")]
+        public async Task<ActionResult<LevelResponseDto>> DeleteAsync(Guid levelId)
+        {
+            await _levelService.DeleteAsync(levelId);
+
+            return Ok();
+        }
     }
 }

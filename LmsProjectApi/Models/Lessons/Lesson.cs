@@ -1,11 +1,11 @@
-﻿using LmsProjectApi.Models.Courses;
+﻿using LmsProjectApi.Models.Base;
+using LmsProjectApi.Models.Courses;
 using System;
 
 namespace LmsProjectApi.Models.Lessons
 {
-    public class Lesson
+    public class Lesson : BaseEntity
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 

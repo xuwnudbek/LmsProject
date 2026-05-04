@@ -59,5 +59,13 @@ namespace LmsProjectApi.Controllers
             return Ok(updated);
         }
 
+        [HttpDelete("{courseId}")]
+        public async Task<ActionResult<CourseResponseDto>> DeleteAsync(Guid courseId)
+        {
+            await _courseService.DeleteAsync(courseId);
+            
+            return Ok();
+        }
+
     }
 }

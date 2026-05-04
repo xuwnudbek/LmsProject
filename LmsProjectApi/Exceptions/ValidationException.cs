@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LmsProjectApi.Exceptions
 {
@@ -20,6 +22,17 @@ namespace LmsProjectApi.Exceptions
             {
                 { propertyName, [errorMessage] }
             };
+        }
+
+        public ValidationException(IEnumerable<ValidationFailure> failures)
+        : base("Validation error occured.", StatusCodes.Status422UnprocessableEntity, "VALIDATION_ERROR")
+        {
+            Errors = failures
+                .GroupBy(f => f.PropertyName)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(f=> f.ErrorMessage).ToArray()
+                );
         }
 
     }

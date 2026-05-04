@@ -10,6 +10,7 @@ namespace LmsProjectApi.Mappings
         {
             CreateMap<GroupCreateDto, Group>();
             CreateMap<Group, GroupResponseDto>();
+            CreateMap<Group, GroupSimpleDto>();
             CreateMap<GroupUpdateDto, Group>();
         }
     }
