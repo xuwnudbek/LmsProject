@@ -82,6 +82,19 @@ namespace LmsProjectApi
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
             builder.Services.AddAutoMapper(cfg => { }, typeof(Program));
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend", policy =>
+                {
+                    policy.WithOrigins(
+                            "http://localhost:7070",
+                            builder.Configuration["FrontendUrl"]
+                        )
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
 
 
             // Build app
@@ -116,6 +129,7 @@ namespace LmsProjectApi
                 });
             }
 
+
             // Redirect to Scalar
             app.Use(async (context, next) =>
             {
@@ -127,8 +141,10 @@ namespace LmsProjectApi
                 await next();
             });
 
+
             app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
+            app.UseCors("AllowFrontend");
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
