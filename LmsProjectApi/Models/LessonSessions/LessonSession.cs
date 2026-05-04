@@ -1,8 +1,11 @@
 ﻿using LmsProjectApi.Enums;
+using LmsProjectApi.Models.Attendances;
 using LmsProjectApi.Models.Base;
 using LmsProjectApi.Models.Groups;
 using LmsProjectApi.Models.Lessons;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace LmsProjectApi.Models.LessonSessions
 {
@@ -18,6 +21,8 @@ namespace LmsProjectApi.Models.LessonSessions
 
         public Guid GroupId { get; set; }
         public Group Group { get; set; }
+
+        public ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
 
     }
 }

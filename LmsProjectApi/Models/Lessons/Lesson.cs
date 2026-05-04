@@ -1,6 +1,9 @@
 ﻿using LmsProjectApi.Models.Base;
 using LmsProjectApi.Models.Courses;
+using LmsProjectApi.Models.LessonSessions;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace LmsProjectApi.Models.Lessons
 {
@@ -11,5 +14,7 @@ namespace LmsProjectApi.Models.Lessons
 
         public Guid CourseId { get; set; }
         public Course Course { get; set; }
+
+        public ICollection<LessonSession> LessonSessions { get; set; } = new HashSet<LessonSession>();
     }
 }

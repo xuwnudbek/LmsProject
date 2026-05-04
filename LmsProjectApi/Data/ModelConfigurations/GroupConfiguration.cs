@@ -18,6 +18,16 @@ namespace LmsProjectApi.Data.ModelConfigurations
             builder.Property(g => g.UpdatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .ValueGeneratedOnAddOrUpdate();
+
+            builder.HasOne(g => g.Level)
+                .WithMany(l => l.Groups)
+                .HasForeignKey(g=> g.LevelId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(g => g.Course)
+                .WithMany(c => c.Groups)
+                .HasForeignKey(g => g.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

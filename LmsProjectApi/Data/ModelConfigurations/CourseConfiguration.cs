@@ -19,14 +19,6 @@ namespace LmsProjectApi.Data.ModelConfigurations
                 .HasMaxLength(500)
                 .HasDefaultValue(string.Empty);
 
-            builder.Property(c => c.PaymentValue)
-                .IsRequired()
-                .HasDefaultValue(0);
-
-            builder.Property(c => c.DurationInDays)
-                .IsRequired()
-                .HasDefaultValue(0);
-
             builder.Property(c => c.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .ValueGeneratedOnAdd();
@@ -39,12 +31,12 @@ namespace LmsProjectApi.Data.ModelConfigurations
             builder.HasOne(c => c.User)
                 .WithMany(u => u.Courses)
                 .HasForeignKey(c => c.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(c => c.Subject)
                 .WithMany(u => u.Courses)
                 .HasForeignKey(c => c.SubjectId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

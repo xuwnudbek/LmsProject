@@ -1,4 +1,5 @@
-﻿using LmsProjectApi.Models.Users;
+﻿using LmsProjectApi.Models.Courses;
+using LmsProjectApi.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

@@ -67,14 +67,6 @@ namespace LmsProjectApi.Services.Courses
 
             _mapper.Map(dto, existingCourse);
 
-            //existingCourse.Name = dto.Name;
-            //existingCourse.Description = dto.Description;
-            //existingCourse.PaymentValue = dto.PaymentValue;
-            //existingCourse.DurationInDays = dto.DurationInDays;
-            //existingCourse.SubjectId = dto.SubjectId;
-            //existingCourse.UserId = dto.UserId;
-            //existingCourse.LevelId = dto.LevelId;
-
             await _courseRepository.UpdateAsync();
 
             return _mapper.Map<CourseResponseDto>(existingCourse);

@@ -1,6 +1,8 @@
 ﻿using LmsProjectApi.Enums;
+using LmsProjectApi.Models.Attendances;
 using LmsProjectApi.Models.Base;
 using LmsProjectApi.Models.Courses;
+using LmsProjectApi.Models.Payments;
 using LmsProjectApi.Models.UserGroups;
 using System;
 using System.Collections.Generic;
@@ -21,5 +23,7 @@ namespace LmsProjectApi.Models.Users
 
         public ICollection<UserGroup> UserGroups { get; set; } = new HashSet<UserGroup>();
         public ICollection<Course> Courses { get; set; } = new HashSet<Course>();
+        public ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
+        public ICollection<Payment> Payments { get; set; } = new HashSet<Payment>();
     }
 }

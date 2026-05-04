@@ -14,13 +14,6 @@ namespace LmsProjectApi.Validators.Courses
             RuleFor(c => c.Description)
                 .MaximumLength(500).WithMessage("Course description must not exceed 500 characters.");
                 
-            RuleFor(c => c.PaymentValue)
-                .GreaterThanOrEqualTo(0).WithMessage("Payment value must not be negative.");
-
-            RuleFor(c => c.DurationInDays)
-                .GreaterThan(0).WithMessage("Duration must be greater than 0.")
-                .LessThanOrEqualTo(365).WithMessage("Duration must not exceed 365 days.");
-
             RuleFor(c => c.UserId)
                 .NotEmpty().WithMessage("Teacher is required.");
 
