@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using LmsProjectApi.DTOs.Lessons;
 using LmsProjectApi.DTOs.LessonSessions;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Models.LessonSessions;
@@ -12,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LmsProjectApi.Services.LessonSessions
 {
-    public class LessonSessionService
+    public class LessonSessionService : ILessonSessionService
     {
         private readonly ILessonSessionRepository _lessonSessionRepository;
         private readonly IValidator<LessonSessionCreateDto> _lessonSessionCreateValidator;
@@ -26,9 +25,9 @@ namespace LmsProjectApi.Services.LessonSessions
             IMapper mapper)
         {
             _lessonSessionRepository = lessonSessionRepository;
-            _mapper = mapper;
             _lessonSessionCreateValidator = lessonSessionCreateValidator;
             _lessonSessionUpdateValidator = lessonSessionUpdateValidator;
+            _mapper = mapper;
         }
 
 

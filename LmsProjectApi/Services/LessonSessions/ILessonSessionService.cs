@@ -1,5 +1,4 @@
-﻿using LmsProjectApi.DTOs.Lessons;
-using LmsProjectApi.DTOs.LessonSessions;
+﻿using LmsProjectApi.DTOs.LessonSessions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

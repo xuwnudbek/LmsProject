@@ -1,6 +1,4 @@
-﻿using LmsProjectApi.DTOs.Lessons;
-using LmsProjectApi.DTOs.LessonSessions;
-using LmsProjectApi.Models.LessonSessions;
+﻿using LmsProjectApi.DTOs.LessonSessions;
 using LmsProjectApi.Services.LessonSessions;
 using Microsoft.AspNetCore.Mvc;
 using System;
