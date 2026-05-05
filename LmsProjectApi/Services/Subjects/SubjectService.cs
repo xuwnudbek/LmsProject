@@ -1,16 +1,18 @@
 ﻿using AutoMapper;
-using LmsProjectApi.DTOs.Subjects;
+using FluentValidation;
+using LmsProjectApi.DTOs.Levels;
 using LmsProjectApi.DTOs.SubjectLevel;
+using LmsProjectApi.DTOs.Subjects;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Models.SubjectLevels;
 using LmsProjectApi.Models.Subjects;
+using LmsProjectApi.Repositories.SubjectLevels;
 using LmsProjectApi.Repositories.Subjects;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LmsProjectApi.Repositories.SubjectLevels;
 
 namespace LmsProjectApi.Services.Subjects
 {
@@ -18,20 +20,31 @@ namespace LmsProjectApi.Services.Subjects
     {
         private readonly ISubjectRepository _subjectRepository;
         private readonly ISubjectLevelRepository _subjectLevelRepository;
+        private readonly IValidator<SubjectCreateDto> _subjectCreateValidator;
+        private readonly IValidator<SubjectUpdateDto> _subjectUpdateValidator;
         private readonly IMapper _mapper;
 
         public SubjectService(
             ISubjectRepository subjectRepository,
             ISubjectLevelRepository subjectLevelRepository,
+            IValidator<SubjectCreateDto> subjectCreateValidator,
+            IValidator<SubjectUpdateDto> subjectUpdateValidator,
             IMapper mapper)
         {
             _subjectRepository = subjectRepository;
             _subjectLevelRepository = subjectLevelRepository;
             _mapper = mapper;
+            _subjectCreateValidator = subjectCreateValidator;
+            _subjectUpdateValidator = subjectUpdateValidator;
         }
 
         public async Task<SubjectResponseDto> AddAsync(SubjectCreateDto dto)
         {
+            var validatorResult = _subjectCreateValidator.Validate(dto);
+
+            if (!validatorResult.IsValid)
+                throw new Exceptions.ValidationException(validatorResult.Errors);
+
             var subject = _mapper.Map<Subject>(dto);
 
             if(!dto.HasLevel && dto.Levels.Any())
@@ -87,6 +100,11 @@ namespace LmsProjectApi.Services.Subjects
             Guid subjectId,
             SubjectUpdateDto dto)
         {
+            var validatorResult = _subjectUpdateValidator.Validate(dto);
+
+            if (!validatorResult.IsValid)
+                throw new Exceptions.ValidationException(validatorResult.Errors);
+
             Subject existingSubject =
                 await _subjectRepository.SelectByIdAsync(subjectId);
             

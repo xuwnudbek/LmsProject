@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using FluentValidation;
+using LmsProjectApi.DTOs.Levels;
 using LmsProjectApi.DTOs.Payments;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Models.Payments;
@@ -13,18 +15,29 @@ namespace LmsProjectApi.Services.Payments
     public class PaymentService : IPaymentService
     {
         private readonly IPaymentRepository _paymentRepository;
+        private readonly IValidator<PaymentCreateDto> _paymentCreateValidator;
+        private readonly IValidator<PaymentUpdateDto> _paymentUpdateValidator;
         private readonly IMapper _mapper;
 
         public PaymentService(
             IPaymentRepository paymentRepository,
+            IValidator<PaymentCreateDto> paymentCreateValidator,
+            IValidator<PaymentUpdateDto> paymentUpdateValidator,
             IMapper mapper)
         {
             _paymentRepository = paymentRepository;
             _mapper = mapper;
+            _paymentCreateValidator = paymentCreateValidator;
+            _paymentUpdateValidator = paymentUpdateValidator;
         }
 
         public async Task<PaymentResponseDto> AddAsync(PaymentCreateDto dto)
         {
+            var validatorResult = _paymentCreateValidator.Validate(dto);
+
+            if (!validatorResult.IsValid)
+                throw new Exceptions.ValidationException(validatorResult.Errors);
+
             Payment payment = _mapper.Map<Payment>(dto);
 
             Payment created =
@@ -55,6 +68,11 @@ namespace LmsProjectApi.Services.Payments
             Guid paymentId,
             PaymentUpdateDto dto)
         {
+            var validatorResult = _paymentUpdateValidator.Validate(dto);
+
+            if (!validatorResult.IsValid)
+                throw new Exceptions.ValidationException(validatorResult.Errors);
+
             Payment existingPayment =
                 await _paymentRepository.SelectByIdAsync(paymentId);
 

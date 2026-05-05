@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using LmsProjectApi.DTOs.Attendances;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Models.Attendances;
@@ -13,21 +14,32 @@ namespace LmsProjectApi.Services.Attendances
     public class AttendanceService : IAttendanceService
     {
         private readonly IAttendanceRepository _attendanceRepository;
+        private readonly IValidator<AttendanceCreateDto> _attendanceCreateValidator;
+        private readonly IValidator<AttendanceUpdateDto> _attendanceUpdateValidator;
         private readonly IMapper _mapper;
 
         public AttendanceService(
             IAttendanceRepository attendanceRepository,
+            IValidator<AttendanceCreateDto> attendanceCreateValidator,
+            IValidator<AttendanceUpdateDto> attendanceUpdateValidator,
             IMapper mapper)
         {
             _attendanceRepository = attendanceRepository;
             _mapper = mapper;
+            _attendanceCreateValidator = attendanceCreateValidator;
+            _attendanceUpdateValidator = attendanceUpdateValidator;
         }
 
         public async Task<AttendanceResponseDto> AddAsync(AttendanceCreateDto dto)
         {
+            var validatorResult = _attendanceCreateValidator.Validate(dto);
+
+            if (!validatorResult.IsValid)
+                throw new Exceptions.ValidationException(validatorResult.Errors);
+
             Attendance attendance = _mapper.Map<Attendance>(dto);
 
-            Attendance inserted = 
+            Attendance inserted =
                 await _attendanceRepository.InsertAsync(attendance);
 
             return _mapper.Map<AttendanceResponseDto>(inserted);
@@ -43,7 +55,7 @@ namespace LmsProjectApi.Services.Attendances
 
         public async Task<AttendanceResponseDto> GetByIdAsync(Guid attendanceId)
         {
-            Attendance existingAttendance = 
+            Attendance existingAttendance =
                 await _attendanceRepository.SelectByIdAsync(attendanceId);
 
             if (existingAttendance is null)
@@ -56,6 +68,11 @@ namespace LmsProjectApi.Services.Attendances
             Guid attendanceId,
             AttendanceUpdateDto dto)
         {
+            var validatorResult = _attendanceUpdateValidator.Validate(dto);
+
+            if (!validatorResult.IsValid)
+                throw new Exceptions.ValidationException(validatorResult.Errors);
+
             Attendance existingAttendance =
                 await _attendanceRepository.SelectByIdAsync(attendanceId);
 

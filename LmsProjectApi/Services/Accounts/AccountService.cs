@@ -1,4 +1,5 @@
-﻿using LmsProjectApi.Helpers;
+﻿using FluentValidation;
+using LmsProjectApi.Helpers;
 using LmsProjectApi.Models.UserCredentials;
 using LmsProjectApi.Models.Users;
 using LmsProjectApi.Models.UserTokens;
@@ -19,28 +20,36 @@ namespace LmsProjectApi.Services.Accounts
     {
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
+        private readonly IValidator<UserCredential> _credentialValidator;
 
         public AccountService(
             IUserRepository userRepository,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IValidator<UserCredential> credentialValidator)
         {
             _userRepository = userRepository;
             _configuration = configuration;
+            _credentialValidator = credentialValidator;
         }
 
         public async Task<UserToken> LoginAsync(UserCredential userCredential)
         {
+            var validationResult = _credentialValidator.Validate(userCredential);
+
+            if (!validationResult.IsValid)
+                throw new Exceptions.ValidationException(validationResult.Errors);
+
             User existingUser = 
                 await _userRepository.SelectUserByUsernameAsync(userCredential.Username);
 
             if (existingUser is null)
-                throw new ValidationException("Invalid login credentials");
+                throw new Exceptions.ValidationException("Invalid login credentials");
 
             bool isValidPassword = 
                 HashingHelper.Verify(userCredential.Password, existingUser.PasswordHash);
 
             if(isValidPassword is not true)
-                throw new ValidationException("Invalid login credentials");
+                throw new Exceptions.ValidationException("Invalid login credentials");
 
             return GenerateUserToken(existingUser);
         }
@@ -61,7 +70,7 @@ namespace LmsProjectApi.Services.Accounts
                 new Claim(ClaimTypes.Role, user.Role.ToString()),
             };
 
-            var expirationDate = DateTime.UtcNow.AddMinutes(1440);
+            var expirationDate = DateTime.UtcNow.AddMinutes(15);
 
             var securityToken = new JwtSecurityToken(
                 issuer: issuer,

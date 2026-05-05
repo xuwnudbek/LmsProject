@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using LmsProjectApi.DTOs.Lessons;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Models.Lessons;
@@ -14,18 +15,29 @@ namespace LmsProjectApi.Services.Lessons
     public class LessonService : ILessonService
     {
         private readonly ILessonRepository _lessonRepository;
+        private readonly IValidator<LessonCreateDto> _lessonCreateValidator;
+        private readonly IValidator<LessonUpdateDto> _lessonUpdateValidator;
         private readonly IMapper _mapper;
 
         public LessonService(
             ILessonRepository lessonRepository,
+            IValidator<LessonCreateDto> lessonCreateValidator,
+            IValidator<LessonUpdateDto> lessonUpdateValidator,
             IMapper mapper)
         {
             _lessonRepository = lessonRepository;
             _mapper = mapper;
+            _lessonCreateValidator = lessonCreateValidator;
+            _lessonUpdateValidator = lessonUpdateValidator;
         }
 
         public async Task<LessonResponseDto> AddAsync(LessonCreateDto dto)
         {
+            var validatorResult = _lessonCreateValidator.Validate(dto);
+
+            if (!validatorResult.IsValid)
+                throw new Exceptions.ValidationException(validatorResult.Errors);
+
             Lesson lesson = _mapper.Map<Lesson>(dto);
 
             Lesson inserted =
@@ -67,6 +79,11 @@ namespace LmsProjectApi.Services.Lessons
 
         public async Task<LessonResponseDto> UpdateAsync(Guid lessonId, LessonUpdateDto dto)
         {
+            var validatorResult = _lessonUpdateValidator.Validate(dto);
+
+            if (!validatorResult.IsValid)
+                throw new Exceptions.ValidationException(validatorResult.Errors);
+
             Lesson existingLesson =
                 await _lessonRepository.SelectByIdAsync(lessonId);
 

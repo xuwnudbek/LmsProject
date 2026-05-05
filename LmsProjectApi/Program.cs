@@ -82,15 +82,8 @@ namespace LmsProjectApi
 
             // IV. Framework Services
             builder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
-            
-            builder.Services.AddControllers()
-                .AddJsonOptions(options =>
-                {
-                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-                });
-
+            builder.Services.AddControllers();
             builder.Services.AddOpenApi();
-            
             builder.Services.AddAutoMapper(cfg => { }, typeof(Program));
             builder.Services.AddCors(options =>
             {

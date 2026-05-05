@@ -11,7 +11,6 @@ namespace LmsProjectApi.DTOs.Users
         public string PhoneNumber { get; set; }
         public string Username { get; set; }
         public bool IsActive { get; set; }
-        public string ImageUrl { get; set; }
         public UserRole Role { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }

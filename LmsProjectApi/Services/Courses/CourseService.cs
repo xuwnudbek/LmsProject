@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using LmsProjectApi.DTOs.Courses;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Models.Courses;
+using LmsProjectApi.Models.UserCredentials;
 using LmsProjectApi.Repositories.Courses;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,18 +16,29 @@ namespace LmsProjectApi.Services.Courses
     public class CourseService : ICourseService
     {
         private readonly ICourseRepository _courseRepository;
+        private readonly IValidator<CourseCreateDto> _courseCreateValidator;
+        private readonly IValidator<CourseUpdateDto> _courseUpdateValidator;
         private readonly IMapper _mapper;
 
         public CourseService(
             ICourseRepository courseRepository,
+            IValidator<CourseCreateDto> courseCreateValidator,
+            IValidator<CourseUpdateDto> courseUpdateValidator,
             IMapper mapper)
         {
             _courseRepository = courseRepository;
             _mapper = mapper;
+            _courseCreateValidator = courseCreateValidator;
+            _courseUpdateValidator = courseUpdateValidator;
         }
 
         public async Task<CourseResponseDto> AddAsync(CourseCreateDto dto)
         {
+            var validationResult = _courseCreateValidator.Validate(dto);
+
+            if (!validationResult.IsValid)
+                throw new Exceptions.ValidationException(validationResult.Errors);
+
             Course course = _mapper.Map<Course>(dto);
 
             Course created = 
@@ -59,6 +72,11 @@ namespace LmsProjectApi.Services.Courses
             Guid courseId,
             CourseUpdateDto dto)
         {
+            var validationResult = _courseUpdateValidator.Validate(dto);
+
+            if (!validationResult.IsValid)
+                throw new Exceptions.ValidationException(validationResult.Errors);
+
             Course existingCourse =
                 await _courseRepository.SelectByIdAsync(courseId);
 

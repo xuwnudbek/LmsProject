@@ -8,17 +8,11 @@ namespace LmsProjectApi.Validators.Courses
         public CourseUpdateDtoValidator()
         {
             RuleFor(c => c.Name)
-                .NotEmpty().WithMessage("Course name is required.")
-                .MinimumLength(2).WithMessage("Course name must be at least 2 characters.");
+                .NotEmpty().WithMessage("Name is required.")
+                .MinimumLength(2).WithMessage("Name must be at least 2 characters.");
 
             RuleFor(c => c.Description)
-                    .MaximumLength(500).WithMessage("Course description must not exceed 500 characters.");
-
-            RuleFor(c => c.UserId)
-                    .NotEmpty().WithMessage("Teacher is required.");
-
-            RuleFor(c => c.SubjectId)
-                    .NotEmpty().WithMessage("Subject is required.");
+                    .MaximumLength(500).WithMessage("Description must not exceed 500 characters.");
         }
     }
 }

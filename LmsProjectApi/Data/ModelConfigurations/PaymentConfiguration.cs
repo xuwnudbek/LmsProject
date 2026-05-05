@@ -9,7 +9,7 @@ namespace LmsProjectApi.Data.ModelConfigurations
         public void Configure(EntityTypeBuilder<Payment> builder)
         {
             builder.Property(p => p.Amount)
-                   .IsRequired();
+                   .HasDefaultValue(0);
 
             builder.Property(p => p.DiscountAmount)
                    .HasDefaultValue(0);

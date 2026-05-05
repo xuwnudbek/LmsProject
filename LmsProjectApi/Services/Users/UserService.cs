@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using LmsProjectApi.DTOs.Users;
 using LmsProjectApi.Enums;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Helpers;
 using LmsProjectApi.Models.Users;
 using LmsProjectApi.Repositories.Users;
+using LmsProjectApi.Validators.Subjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,19 +17,30 @@ namespace LmsProjectApi.Services.Users
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IValidator<UserCreateDto> _userCreateValidator;
+        private readonly IValidator<UserUpdateDto> _userUpdateValidator;
         private readonly IMapper _mapper;
 
         public UserService(
             IUserRepository userRepository,
-            IMapper mapper)
+            IMapper mapper,
+            IValidator<UserCreateDto> userCreateValidator,
+            IValidator<UserUpdateDto> userUpdateValidator)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _userCreateValidator = userCreateValidator;
+            _userUpdateValidator = userUpdateValidator;
         }
 
         public async Task<UserResponseDto> AddUserAsync(
             UserCreateDto dto)
         {
+            var validatorResult = _userCreateValidator.Validate(dto);
+
+            if (!validatorResult.IsValid)
+                throw new Exceptions.ValidationException(validatorResult.Errors);
+
             string normalizedUsername =
                 dto.Username.Trim().ToLowerInvariant();
 
@@ -76,8 +89,15 @@ namespace LmsProjectApi.Services.Users
             return _mapper.Map<UserResponseDto>(existingUser);
         }
 
-        public async Task<UserResponseDto> UpdateUserAsync(Guid userId, UserUpdateDto dto)
+        public async Task<UserResponseDto> UpdateUserAsync(
+            Guid userId,
+            UserUpdateDto dto)
         {
+            var validatorResult = _userUpdateValidator.Validate(dto);
+
+            if (!validatorResult.IsValid)
+                throw new Exceptions.ValidationException(validatorResult.Errors);
+
             User existingUser =
                 await _userRepository.SelectUserByIdAsync(userId);
 

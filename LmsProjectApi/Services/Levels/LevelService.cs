@@ -14,21 +14,29 @@ namespace LmsProjectApi.Services.Levels
     public class LevelService : ILevelService
     {
         private readonly ILevelRepository _levelRepository;
+        private readonly IValidator<LevelCreateDto> _levelCreateValidator;
         private readonly IValidator<LevelUpdateDto> _levelUpdateValidator;
         private readonly IMapper _mapper;
 
         public LevelService(
             ILevelRepository levelRepository,
-            IMapper mapper,
-            IValidator<LevelUpdateDto> levelUpdateValidator)
+            IValidator<LevelCreateDto> levelCreateValidator,
+            IValidator<LevelUpdateDto> levelUpdateValidator,
+            IMapper mapper)
         {
             _levelRepository = levelRepository;
             _mapper = mapper;
             _levelUpdateValidator = levelUpdateValidator;
+            _levelCreateValidator = levelCreateValidator;
         }
 
         public async Task<LevelResponseDto> AddAsync(LevelCreateDto dto)
         {
+            var validatorResult = _levelCreateValidator.Validate(dto);
+
+            if (!validatorResult.IsValid)
+                throw new Exceptions.ValidationException(validatorResult.Errors);
+
             Level level = _mapper.Map<Level>(dto);
 
             Level newLevel =
@@ -63,10 +71,10 @@ namespace LmsProjectApi.Services.Levels
             Guid levelId,
             LevelUpdateDto dto)
         {
-            var result = _levelUpdateValidator.Validate(dto);
+            var validatorResult = _levelUpdateValidator.Validate(dto);
 
-            if (!result.IsValid)
-                throw new Exceptions.ValidationException(result.Errors);
+            if (!validatorResult.IsValid)
+                throw new Exceptions.ValidationException(validatorResult.Errors);
 
             Level existingLevel =
                 await _levelRepository.SelectByIdAsync(levelId);

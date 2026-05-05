@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using FluentValidation;
+using LmsProjectApi.DTOs.Courses;
 using LmsProjectApi.DTOs.Groups;
 using LmsProjectApi.DTOs.Levels;
 using LmsProjectApi.Exceptions;
@@ -15,18 +17,29 @@ namespace LmsProjectApi.Services.Groups
     public class GroupService : IGroupService
     {
         private readonly IGroupRepository _groupRepository;
+        private readonly IValidator<GroupCreateDto> _groupCreateValidator;
+        private readonly IValidator<GroupUpdateDto> _groupUpdateValidator;
         private readonly IMapper _mapper;
 
         public GroupService(
             IGroupRepository groupRepository,
+            IValidator<GroupCreateDto> groupCreateValidator,
+            IValidator<GroupUpdateDto> groupUpdateValidator,
             IMapper mapper)
         {
             _groupRepository = groupRepository;
             _mapper = mapper;
+            _groupCreateValidator = groupCreateValidator;
+            _groupUpdateValidator = groupUpdateValidator;
         }
 
         public async Task<GroupResponseDto> AddAsync(GroupCreateDto dto)
         {
+            var validatorResult = _groupCreateValidator.Validate(dto);
+
+            if (!validatorResult.IsValid)
+                throw new Exceptions.ValidationException(validatorResult.Errors);
+
             Group group = _mapper.Map<Group>(dto);
 
             Group inserted =
@@ -61,6 +74,11 @@ namespace LmsProjectApi.Services.Groups
             Guid groupId,
             GroupUpdateDto dto)
         {
+            var validatorResult = _groupUpdateValidator.Validate(dto);
+
+            if (!validatorResult.IsValid)
+                throw new Exceptions.ValidationException(validatorResult.Errors);
+
             Group existingGroup =
                 await _groupRepository.SelectByIdAsync(groupId);
 

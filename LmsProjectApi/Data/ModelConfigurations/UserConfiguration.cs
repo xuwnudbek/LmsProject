@@ -34,8 +34,8 @@ namespace LmsProjectApi.Data.ModelConfigurations
                 .IsRequired()
                 .HasDefaultValue(true);
 
-            builder.Property(u => u.ImageUrl)
-                .HasMaxLength(500);
+            builder.Property(u => u.Role)
+                .IsRequired();
 
             builder.Property(u => u.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -44,9 +44,6 @@ namespace LmsProjectApi.Data.ModelConfigurations
             builder.Property(u => u.UpdatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .ValueGeneratedOnAddOrUpdate();
-
-            builder.Property(u => u.Role)
-                .IsRequired();
 
             // Indexes
             builder.HasIndex(u => u.Username).IsUnique();
