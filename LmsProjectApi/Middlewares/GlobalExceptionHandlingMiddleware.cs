@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using LmsProjectApi.Exceptions;
+using LmsProjectApi.Models.Api;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -63,11 +63,14 @@ public class GlobalExceptionHandlingMiddleware
             context.Response.StatusCode = statusCode;
             context.Response.ContentType = "application/json";
 
-            await context.Response.WriteAsJsonAsync(new
-            {
-                StatusCode = statusCode,
-                ErrorMessage = errorMessage
-            });
+            await context.Response.WriteAsJsonAsync(
+                ApiResponse<ErrorResponse>.Fail(new ErrorResponse
+                {
+                    StatusCode = statusCode,
+                    ErrorMessage = errorMessage
+                })
+            );
         }
     }
 }
+

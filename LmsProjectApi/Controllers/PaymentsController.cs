@@ -1,5 +1,10 @@
-﻿using LmsProjectApi.DTOs.Payments;
+﻿using LmsProjectApi.DTOs.Levels;
+using LmsProjectApi.DTOs.Payments;
+using LmsProjectApi.Models.Api;
+using LmsProjectApi.Models.Levels;
+using LmsProjectApi.Models.Payments;
 using LmsProjectApi.Services.Payments;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,11 +24,12 @@ namespace LmsProjectApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<PaymentResponseDto>> PostAsync(PaymentCreateDto dto)
+        public async Task<ActionResult<PaymentResponseDto>> CreateAsync(PaymentCreateDto dto)
         {
-            var payment = await _paymentService.AddAsync(dto);
+            PaymentResponseDto created = 
+                await _paymentService.AddAsync(dto);
 
-            return Ok(payment);
+            return Ok(ApiResponse<PaymentResponseDto>.Ok(created, "Successfully created."));
         }
 
         [HttpGet]
@@ -32,7 +38,7 @@ namespace LmsProjectApi.Controllers
             IEnumerable<PaymentResponseDto> payments =
                 _paymentService.GetAll();
 
-            return Ok(payments);
+            return Ok(ApiResponse<IEnumerable<PaymentResponseDto>>.Ok(payments));
         }
 
         [HttpGet("{paymentId}")]
@@ -41,7 +47,8 @@ namespace LmsProjectApi.Controllers
             PaymentResponseDto payment =
                 await _paymentService.GetByIdAsync(paymentId);
 
-            return Ok(payment);
+            return Ok(ApiResponse<PaymentResponseDto>.Ok(payment));
+
         }
 
         [HttpPut("{paymentId}")]
@@ -52,7 +59,7 @@ namespace LmsProjectApi.Controllers
             PaymentResponseDto updated =
                 await _paymentService.UpdateAsync(paymentId, dto);
 
-            return Ok(updated);
+            return Ok(ApiResponse<PaymentResponseDto>.Ok(updated, "Successfully updated."));
         }
 
         [HttpDelete("{paymentId}")]
@@ -60,7 +67,8 @@ namespace LmsProjectApi.Controllers
         {
             await _paymentService.DeleteAsync(paymentId);
 
-            return Ok();
+            return Ok(ApiResponse<object>.Ok(null!, "Successfully deleted."));
+
         }
     }
 }

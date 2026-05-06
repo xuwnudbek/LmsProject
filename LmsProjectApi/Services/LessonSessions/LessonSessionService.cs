@@ -4,6 +4,7 @@ using LmsProjectApi.DTOs.LessonSessions;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Models.LessonSessions;
 using LmsProjectApi.Repositories.LessonSessions;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +50,10 @@ namespace LmsProjectApi.Services.LessonSessions
         public ICollection<LessonSessionResponseDto> GetAll()
         {
             ICollection<LessonSession> lessonSessions =
-                _lessonSessionRepository.SelectAll().ToList();
+                _lessonSessionRepository
+                    .SelectAll()
+                    .Include(ls =>ls.Lesson)
+                    .ToList();
 
             return _mapper.Map<ICollection<LessonSessionResponseDto>>(lessonSessions);
         }

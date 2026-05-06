@@ -29,8 +29,7 @@ namespace LmsProjectApi
             // Add Environments
             builder.Configuration.AddEnvironmentVariables();
 
-            // ADD SERVICES TO THE CONTAINER.
-            // I. Database
+            // Database Configuration
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
                 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
@@ -40,7 +39,7 @@ namespace LmsProjectApi
                 options.UseNpgsql(connectionString);
             });
 
-            // II. Auth Services
+            // Authentication & Authorization Services
             builder.Services.AddAuthentication(option =>
             {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,10 +61,7 @@ namespace LmsProjectApi
                 });
             builder.Services.AddAuthorization();
 
-
-            // III. Custom Services
-
-            // Services & Repositories
+            // Services & Repositories Services
             builder.Services.Scan(scan => scan
                 .FromAssemblyOf<IUserRepository>()
                 .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Repository")))
@@ -80,7 +76,7 @@ namespace LmsProjectApi
             );
 
 
-            // IV. Framework Services
+            // Framework Services
             builder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
@@ -98,7 +94,7 @@ namespace LmsProjectApi
             // Build app
             var app = builder.Build();
 
-            // Seeder
+            // Seeders
             using (var scope = app.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -127,7 +123,8 @@ namespace LmsProjectApi
                             new ScalarServer("https://localhost:7270")
                         ];
                     });
-                }catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     Console.WriteLine($"OpenApi/Scalar: {ex.Message}");
                 }

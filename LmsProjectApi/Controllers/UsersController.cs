@@ -1,8 +1,13 @@
 ﻿using AutoMapper;
+using LmsProjectApi.DTOs.Subjects;
 using LmsProjectApi.DTOs.Users;
 using LmsProjectApi.Enums;
+using LmsProjectApi.Models.Api;
+using LmsProjectApi.Models.Subjects;
+using LmsProjectApi.Models.Users;
 using LmsProjectApi.Services.Users;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi;
 using System;
@@ -32,22 +37,51 @@ namespace LmsProjectApi.Controllers
         public async Task<ActionResult<UserResponseDto>> CreateAsync(
             [FromBody] UserCreateDto dto)
         {
-            UserResponseDto added =
-                await _userService.AddUserAsync(dto);
+            UserResponseDto created =
+                await _userService.AddAsync(dto);
 
-            var userResponseDto =
-                _mapper.Map<UserResponseDto>(added);
-
-            return Created(string.Empty, userResponseDto);
+            return Ok(ApiResponse<UserResponseDto>.Ok(created, "Successfully created."));
         }
 
         [HttpGet]
-        public ICollection<UserResponseDto> GetAllUsersAsync([FromQuery] UserRole role)
+        public ActionResult<ICollection<UserResponseDto>> GetAllUsersAsync()
         {
             ICollection<UserResponseDto> users =
-                _userService.GetAll(role);
+                _userService.GetAll();
 
-            return users;
+            return Ok(ApiResponse<ICollection<UserResponseDto>>.Ok(users));
         }
+
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<UserResponseDto>> GetById(Guid userId)
+        {
+            UserResponseDto user =
+                await _userService.GetByIdAsync(userId);
+
+            return Ok(ApiResponse<UserResponseDto>.Ok(user));
+        }
+
+
+        [HttpPut("{userId}")]
+        public async Task<ActionResult<UserResponseDto>> UpdateAsync(
+            Guid userId,
+            [FromBody] UserUpdateDto dto)
+        {
+            UserResponseDto updated =
+                await _userService.UpdateAsync(userId, dto);
+
+            return Ok(ApiResponse<UserResponseDto>.Ok(updated, "Successfully updated."));
+        }
+
+
+        [HttpDelete("{userId}")]
+        public async Task<ActionResult<UserResponseDto>> DeleteAsync(Guid userId)
+        {
+            await _userService.DeleteAsync(userId);
+
+            return Ok(ApiResponse<object>.Ok(null!, "Successfully deleted."));
+
+        }
+
     }
 }

@@ -3,6 +3,7 @@ using System;
 using LmsProjectApi.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LmsProjectApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260505184847_RemoveImageUrlFromUser")]
+    partial class RemoveImageUrlFromUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +52,7 @@ namespace LmsProjectApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Attendances", (string)null);
+                    b.ToTable("Attendances");
                 });
 
             modelBuilder.Entity("LmsProjectApi.Models.Courses.Course", b =>
@@ -92,7 +95,7 @@ namespace LmsProjectApi.Migrations
                     b.HasIndex("UserId", "SubjectId")
                         .IsUnique();
 
-                    b.ToTable("Courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("LmsProjectApi.Models.Groups.Group", b =>
@@ -138,7 +141,7 @@ namespace LmsProjectApi.Migrations
                     b.HasIndex("Name", "CourseId", "LevelId")
                         .IsUnique();
 
-                    b.ToTable("Groups", (string)null);
+                    b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("LmsProjectApi.Models.LessonSessions.LessonSession", b =>
@@ -179,7 +182,7 @@ namespace LmsProjectApi.Migrations
 
                     b.HasIndex("LessonId");
 
-                    b.ToTable("LessonSessions", (string)null);
+                    b.ToTable("LessonSessions");
                 });
 
             modelBuilder.Entity("LmsProjectApi.Models.Lessons.Lesson", b =>
@@ -212,7 +215,7 @@ namespace LmsProjectApi.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Lessons", (string)null);
+                    b.ToTable("Lessons");
                 });
 
             modelBuilder.Entity("LmsProjectApi.Models.Levels.Level", b =>
@@ -241,7 +244,7 @@ namespace LmsProjectApi.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Levels", (string)null);
+                    b.ToTable("Levels");
                 });
 
             modelBuilder.Entity("LmsProjectApi.Models.Payments.Payment", b =>
@@ -282,7 +285,7 @@ namespace LmsProjectApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Payments", (string)null);
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("LmsProjectApi.Models.SubjectLevels.SubjectLevel", b =>
@@ -305,7 +308,7 @@ namespace LmsProjectApi.Migrations
                     b.HasIndex("SubjectId", "OrderIndex")
                         .IsUnique();
 
-                    b.ToTable("SubjectLevels", (string)null);
+                    b.ToTable("SubjectLevels");
                 });
 
             modelBuilder.Entity("LmsProjectApi.Models.Subjects.Subject", b =>
@@ -333,7 +336,7 @@ namespace LmsProjectApi.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Subjects", (string)null);
+                    b.ToTable("Subjects");
                 });
 
             modelBuilder.Entity("LmsProjectApi.Models.UserGroups.UserGroup", b =>
@@ -348,7 +351,7 @@ namespace LmsProjectApi.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("UserGroups", (string)null);
+                    b.ToTable("UserGroups");
                 });
 
             modelBuilder.Entity("LmsProjectApi.Models.Users.User", b =>
@@ -407,7 +410,7 @@ namespace LmsProjectApi.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("LmsProjectApi.Models.Attendances.Attendance", b =>

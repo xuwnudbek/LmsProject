@@ -17,8 +17,6 @@ namespace LmsProjectApi.Models.Users
         public string  Username { get; set; }
         public string  PasswordHash { get; set; }
         public bool  IsActive { get; set; }
-        public string  ImageUrl { get; set; }
-        
         public UserRole Role { get; set; }
 
         public ICollection<UserGroup> UserGroups { get; set; } = new HashSet<UserGroup>();

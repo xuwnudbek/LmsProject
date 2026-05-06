@@ -1,4 +1,4 @@
-﻿using LmsProjectApi.DTOs.Users;
+﻿using LmsProjectApi.Models.Api;
 using LmsProjectApi.Models.UserCredentials;
 using LmsProjectApi.Models.UserTokens;
 using LmsProjectApi.Services.Accounts;
@@ -18,12 +18,12 @@ namespace LmsProjectApi.Controllers
         }
 
         [HttpPost("api/login")]
-        public async Task<ActionResult<UserToken>> PostLoginAsync(UserCredential credential)
+        public async Task<ActionResult<UserToken>> LoginAsync(UserCredential credential)
         {
             UserToken userToken =
                 await _accountService.LoginAsync(credential);
 
-            return Ok(userToken);
+            return Ok(ApiResponse<UserToken>.Ok(userToken, "Successfully logged in."));
         }
     }
 }

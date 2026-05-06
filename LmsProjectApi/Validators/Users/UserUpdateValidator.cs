@@ -24,12 +24,10 @@ namespace LmsProjectApi.Validators.Users
                 .MaximumLength(50).WithMessage("Username must not exceed 50 characters.");
 
             RuleFor(u => u.Password)
-                .NotEmpty().WithMessage("Password is required.")
                 .MinimumLength(8).WithMessage("Password must be at least 8 characters.")
                 .MaximumLength(100).WithMessage("Password must not exceed 100 characters.");
 
             RuleFor(u => u.ConfirmPassword)
-                .NotEmpty().WithMessage("ConfirmPassword is required.")
                 .Equal(u => u.Password).WithMessage("Passwords do not match.");
 
             RuleFor(u => u.Role)

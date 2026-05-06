@@ -1,6 +1,10 @@
 ﻿using LmsProjectApi.DTOs.Levels;
+using LmsProjectApi.DTOs.Payments;
 using LmsProjectApi.DTOs.Subjects;
+using LmsProjectApi.Models.Api;
+using LmsProjectApi.Models.Subjects;
 using LmsProjectApi.Services.Subjects;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections;
@@ -21,12 +25,12 @@ namespace LmsProjectApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<SubjectResponseDto>> PostAsync(SubjectCreateDto dto)
+        public async Task<ActionResult<SubjectResponseDto>> CreateAsync(SubjectCreateDto dto)
         {
-            SubjectResponseDto newSubject =
+            SubjectResponseDto created =
                 await _subjectService.AddAsync(dto);
 
-            return Ok(newSubject);
+            return Ok(ApiResponse<SubjectResponseDto>.Ok(created, "Successfully created."));
         }
 
 
@@ -37,7 +41,7 @@ namespace LmsProjectApi.Controllers
             IEnumerable<SubjectResponseDto> subjects =
                 _subjectService.GetAll(withLevels);
 
-            return Ok(subjects);
+            return Ok(ApiResponse<IEnumerable<SubjectResponseDto>>.Ok(subjects));
         }
 
 
@@ -47,7 +51,7 @@ namespace LmsProjectApi.Controllers
             SubjectResponseDto subject =
                 await _subjectService.GetByIdAsync(subjectId);
 
-            return Ok(subject);
+            return Ok(ApiResponse<SubjectResponseDto>.Ok(subject));
         }
 
 
@@ -59,7 +63,7 @@ namespace LmsProjectApi.Controllers
             SubjectResponseDto updated =
                 await _subjectService.UpdateAsync(subjectId, dto);
 
-            return Ok(updated);
+            return Ok(ApiResponse<SubjectResponseDto>.Ok(updated, "Successfully updated."));
         }
 
 
@@ -68,7 +72,8 @@ namespace LmsProjectApi.Controllers
         {
             await _subjectService.DeleteAsync(subjectId);
 
-            return Ok();
+            return Ok(ApiResponse<object>.Ok(null!, "Successfully deleted."));
+
         }
 
     }

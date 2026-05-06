@@ -1,5 +1,9 @@
-﻿using LmsProjectApi.DTOs.Levels;
+﻿using LmsProjectApi.DTOs.Lessons;
+using LmsProjectApi.DTOs.Levels;
+using LmsProjectApi.Models.Api;
+using LmsProjectApi.Models.Levels;
 using LmsProjectApi.Services.Levels;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,11 +23,12 @@ namespace LmsProjectApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<LevelResponseDto>> PostAsync(LevelCreateDto dto)
+        public async Task<ActionResult<LevelResponseDto>> CreateAsync(LevelCreateDto dto)
         {
-            var level = await _levelService.AddAsync(dto);
+            LevelResponseDto created = 
+                await _levelService.AddAsync(dto);
 
-            return Ok(level);
+            return Ok(ApiResponse<LevelResponseDto>.Ok(created, "Successfully created."));
         }
 
         [HttpGet]
@@ -32,7 +37,7 @@ namespace LmsProjectApi.Controllers
             IEnumerable<LevelResponseDto> levels = 
                 _levelService.GetAll();
 
-            return Ok(levels);
+            return Ok(ApiResponse<IEnumerable<LevelResponseDto>>.Ok(levels));
         }
 
         [HttpGet("{levelId}")]
@@ -41,7 +46,8 @@ namespace LmsProjectApi.Controllers
             LevelResponseDto level =
                 await _levelService.GetByIdAsync(levelId);
 
-            return Ok(level);
+            return Ok(ApiResponse<LevelResponseDto>.Ok(level));
+
         }
 
         [HttpPut("{levelId}")]
@@ -52,7 +58,7 @@ namespace LmsProjectApi.Controllers
             LevelResponseDto updated =
                 await _levelService.UpdateAsync(levelId, dto);
 
-            return Ok(updated);
+            return Ok(ApiResponse<LevelResponseDto>.Ok(updated, "Successfully updated."));
         }
 
         [HttpDelete("{levelId}")]
@@ -60,7 +66,7 @@ namespace LmsProjectApi.Controllers
         {
             await _levelService.DeleteAsync(levelId);
 
-            return Ok();
+            return Ok(ApiResponse<object>.Ok(null!, "Successfully deleted."));
         }
     }
 }

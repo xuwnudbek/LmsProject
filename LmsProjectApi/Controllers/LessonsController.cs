@@ -1,5 +1,8 @@
 ﻿using LmsProjectApi.DTOs.Lessons;
+using LmsProjectApi.Models.Api;
+using LmsProjectApi.Models.Lessons;
 using LmsProjectApi.Services.Lessons;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -25,17 +28,18 @@ namespace LmsProjectApi.Controllers
             LessonResponseDto created =
                 await _lessonService.AddAsync(dto);
 
-            return Ok(created);
+            return Ok(ApiResponse<LessonResponseDto>.Ok(created, "Successfully created."));
         }
 
         [HttpPost("some")]
         public async Task<ActionResult<IEnumerable<LessonResponseDto>>> CreateSomeAsync(
             [FromBody] IEnumerable<LessonCreateDto> dto)
         {
-            var createdLessons =
+            IEnumerable<LessonResponseDto> createdLessons =
                 await _lessonService.AddRangeAsync(dto);
 
-            return Ok(createdLessons);
+            return Ok(ApiResponse<IEnumerable<LessonResponseDto>>.Ok(createdLessons, "Successfully created."));
+
         }
 
         [HttpGet]
@@ -44,7 +48,8 @@ namespace LmsProjectApi.Controllers
             ICollection<LessonResponseDto> lessons =
                 _lessonService.GetAll();
 
-            return Ok(lessons);
+            return Ok(ApiResponse<ICollection<LessonResponseDto>>.Ok(lessons));
+
         }
 
         [HttpGet("{lessonId}")]
@@ -53,18 +58,19 @@ namespace LmsProjectApi.Controllers
             LessonResponseDto lesson =
                 await _lessonService.GetByIdAsync(lessonId);
 
-            return Ok(lesson);
+            return Ok(ApiResponse<LessonResponseDto>.Ok(lesson));
         }
 
         [HttpPut("{lessonId}")]
-        public async Task<ActionResult<LessonResponseDto>> GetByIdAsync(
+        public async Task<ActionResult<LessonResponseDto>> UpdateAsync(
             Guid lessonId,
             LessonUpdateDto dto)
         {
             LessonResponseDto updated =
                 await _lessonService.UpdateAsync(lessonId, dto);
 
-            return Ok(updated);
+            return Ok(ApiResponse<LessonResponseDto>.Ok(updated, "Successfully updated."));
+
         }
 
         [HttpDelete("{lessonId}")]
@@ -72,7 +78,7 @@ namespace LmsProjectApi.Controllers
         {
             await _lessonService.DeleteAsync(lessonId);
 
-            return Ok();
+            return Ok(ApiResponse<object>.Ok(null!, "Successfully deleted."));
         }
     }
 }

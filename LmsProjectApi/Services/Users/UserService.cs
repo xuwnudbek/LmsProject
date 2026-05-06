@@ -33,7 +33,7 @@ namespace LmsProjectApi.Services.Users
             _userUpdateValidator = userUpdateValidator;
         }
 
-        public async Task<UserResponseDto> AddUserAsync(
+        public async Task<UserResponseDto> AddAsync(
             UserCreateDto dto)
         {
             var validatorResult = _userCreateValidator.Validate(dto);
@@ -46,42 +46,34 @@ namespace LmsProjectApi.Services.Users
 
             var existingUser =
                 await _userRepository
-                    .SelectUserByUsernameAsync(normalizedUsername);
+                    .SelectByUsernameAsync(normalizedUsername);
 
             if (existingUser is not null)
                 throw new ConflictException($"User with username ({dto.Username}) already exists.");
 
             var user = _mapper.Map<User>(dto);
 
-            var now = DateTimeOffset.UtcNow;
-
             user.Username = normalizedUsername;
             user.PasswordHash = HashingHelper.GetHash(dto.Password);
-            user.Id = Guid.NewGuid();
             user.IsActive = true;
-            user.CreatedAt = now;
-            user.UpdatedAt = now;
 
-
-            User newUser = await _userRepository.InsertUserAsync(user);
+            User newUser = await _userRepository.InsertAsync(user);
 
             return _mapper.Map<UserResponseDto>(newUser);
         }
 
-        public ICollection<UserResponseDto> GetAll(
-            UserRole role)
+        public ICollection<UserResponseDto> GetAll()
         {
             IQueryable<User> users = 
-                _userRepository.SelectAllUsers()
-                .Where(u => u.Role == role);
+                _userRepository.SelectAll();
 
             return _mapper.Map<ICollection<UserResponseDto>>(users);
         }
 
-        public async Task<UserResponseDto> GetUserById(Guid userId)
+        public async Task<UserResponseDto> GetByIdAsync(Guid userId)
         {
             User existingUser =
-                await _userRepository.SelectUserByIdAsync(userId);
+                await _userRepository.SelectByIdAsync(userId);
 
             if (existingUser is null)
                 throw new NotFoundException("User not found.");
@@ -89,7 +81,7 @@ namespace LmsProjectApi.Services.Users
             return _mapper.Map<UserResponseDto>(existingUser);
         }
 
-        public async Task<UserResponseDto> UpdateUserAsync(
+        public async Task<UserResponseDto> UpdateAsync(
             Guid userId,
             UserUpdateDto dto)
         {
@@ -99,25 +91,32 @@ namespace LmsProjectApi.Services.Users
                 throw new Exceptions.ValidationException(validatorResult.Errors);
 
             User existingUser =
-                await _userRepository.SelectUserByIdAsync(userId);
+                await _userRepository.SelectByIdAsync(userId);
 
             if (existingUser is null)
                 throw new NotFoundException("User not found.");
 
-            await _userRepository.UpdateUserAsync();
+            if(dto.Password is not null)
+            {
+                existingUser.PasswordHash = HashingHelper.GetHash(dto.Password);
+            }
+
+            _mapper.Map(dto, existingUser);
+
+            await _userRepository.UpdateAsync();
 
             return _mapper.Map<UserResponseDto>(existingUser);
         }
 
-        public async Task DeleteUserAsync(Guid userId)
+        public async Task DeleteAsync(Guid userId)
         {
             User existingUser =
-                await _userRepository.SelectUserByIdAsync(userId);
+                await _userRepository.SelectByIdAsync(userId);
 
             if (existingUser is null)
                 throw new NotFoundException("User not found.");
 
-            await _userRepository.DeleteUserAsync(userId);
+            await _userRepository.DeleteAsync(userId);
         }
     }
 }

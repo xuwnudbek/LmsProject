@@ -1,8 +1,8 @@
 ﻿using LmsProjectApi.DTOs.Courses;
+using LmsProjectApi.Models.Api;
 using LmsProjectApi.Services.Courses;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,53 +19,47 @@ namespace LmsProjectApi.Controllers
             _courseService = courseService;
         }
 
-
         [HttpPost]
-        public async Task<ActionResult<CourseResponseDto>> CreateAsync(
+        public async Task<ActionResult<ApiResponse<CourseResponseDto>>> CreateAsync(
             [FromBody] CourseCreateDto dto)
         {
-            CourseResponseDto created = 
-                await _courseService.AddAsync(dto);
+            CourseResponseDto created = await _courseService.AddAsync(dto);
 
-            return Ok(created);
+            return Ok(ApiResponse<CourseResponseDto>.Ok(created, "Successfully created."));
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<CourseResponseDto>> GetAllAsync()
+        public ActionResult<ApiResponse<IEnumerable<CourseResponseDto>>> GetAllAsync()
         {
-            IEnumerable<CourseResponseDto> courses = 
-                _courseService.GetAll();
+            IEnumerable<CourseResponseDto> courses = _courseService.GetAll();
 
-            return Ok(courses);
+            return Ok(ApiResponse<IEnumerable<CourseResponseDto>>.Ok(courses));
         }
 
         [HttpGet("{courseId}")]
-        public async Task<ActionResult<CourseResponseDto>> GetByIdAsync(Guid courseId)
+        public async Task<ActionResult<ApiResponse<CourseResponseDto>>> GetByIdAsync(Guid courseId)
         {
-            CourseResponseDto course =
-                await _courseService.GetByIdAsync(courseId);
+            CourseResponseDto course = await _courseService.GetByIdAsync(courseId);
 
-            return Ok(course);
+            return Ok(ApiResponse<CourseResponseDto>.Ok(course));
         }
 
         [HttpPut("{courseId}")]
-        public async Task<ActionResult<CourseResponseDto>> UpdateAsync(
+        public async Task<ActionResult<ApiResponse<CourseResponseDto>>> UpdateAsync(
             Guid courseId,
             [FromBody] CourseUpdateDto dto)
         {
-            CourseResponseDto updated =
-                await _courseService.UpdateAsync(courseId, dto);
+            CourseResponseDto updated = await _courseService.UpdateAsync(courseId, dto);
 
-            return Ok(updated);
+            return Ok(ApiResponse<CourseResponseDto>.Ok(updated, "Successfully updated."));
         }
 
         [HttpDelete("{courseId}")]
-        public async Task<ActionResult<CourseResponseDto>> DeleteAsync(Guid courseId)
+        public async Task<ActionResult<ApiResponse<object>>> DeleteAsync(Guid courseId)
         {
             await _courseService.DeleteAsync(courseId);
-            
-            return Ok();
-        }
 
+            return Ok(ApiResponse<object>.Ok(null!, "Successfully deleted."));
+        }
     }
 }

@@ -1,10 +1,13 @@
 ﻿using LmsProjectApi.DTOs.Groups;
+using LmsProjectApi.Models.Api;
 using LmsProjectApi.Services.Groups;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace LmsProjectApi.Controllers
 {
@@ -26,7 +29,7 @@ namespace LmsProjectApi.Controllers
             GroupResponseDto created =
                 await _groupService.AddAsync(dto);
 
-            return Ok(created);
+            return Ok(ApiResponse<GroupResponseDto>.Ok(created, "Successfully created."));
         }
 
         [HttpGet]
@@ -35,7 +38,7 @@ namespace LmsProjectApi.Controllers
             ICollection<GroupSimpleDto> gruops =
                 _groupService.GetAll();
 
-            return Ok(gruops);
+            return Ok(ApiResponse<ICollection<GroupSimpleDto>>.Ok(gruops));
         }
 
         [HttpGet("{groupId}")]
@@ -48,14 +51,15 @@ namespace LmsProjectApi.Controllers
         }
 
         [HttpPut("{groupId}")]
-        public async Task<ActionResult<GroupResponseDto>> GetByIdAsync(
+        public async Task<ActionResult<GroupResponseDto>> UpdateAsync(
             Guid groupId,
             GroupUpdateDto dto)
         {
             GroupResponseDto updated = 
                 await _groupService.UpdateAsync(groupId, dto);
 
-            return Ok(updated);
+            return Ok(ApiResponse<GroupResponseDto>.Ok(updated, "Successfully updated."));
+
         }
 
         [HttpDelete("{groupId}")]
@@ -63,7 +67,8 @@ namespace LmsProjectApi.Controllers
         {
             await _groupService.DeleteAsync(groupId);
 
-            return Ok();
+            return Ok(ApiResponse<object>.Ok(null!, "Successfully deleted."));
+
         }
     }
 }

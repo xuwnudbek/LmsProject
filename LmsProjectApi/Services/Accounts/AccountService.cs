@@ -40,7 +40,7 @@ namespace LmsProjectApi.Services.Accounts
                 throw new Exceptions.ValidationException(validationResult.Errors);
 
             User existingUser = 
-                await _userRepository.SelectUserByUsernameAsync(userCredential.Username);
+                await _userRepository.SelectByUsernameAsync(userCredential.Username);
 
             if (existingUser is null)
                 throw new Exceptions.ValidationException("Invalid login credentials");

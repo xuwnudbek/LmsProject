@@ -1,6 +1,8 @@
 ﻿
 
 using LmsProjectApi.DTOs.Attendances;
+using LmsProjectApi.Models.Api;
+using LmsProjectApi.Models.UserTokens;
 using LmsProjectApi.Services.Attendances;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,7 +29,7 @@ namespace LmsProjectApi.Controllers
             AttendanceResponseDto created =
                 await _attendanceService.AddAsync(dto);
 
-            return Ok(created);
+            return Ok(ApiResponse<AttendanceResponseDto>.Ok(created, "Successfully created."));
         }
 
         [HttpGet]
@@ -36,11 +38,11 @@ namespace LmsProjectApi.Controllers
             IEnumerable<AttendanceResponseDto> attendances =
                 _attendanceService.GetAll();
 
-            return Ok(attendances);
+            return Ok(ApiResponse<IEnumerable<AttendanceResponseDto>>.Ok(attendances));
         }
 
         [HttpGet("{attendanceId}")]
-        public async Task<ActionResult<AttendanceResponseDto>> GetByIdAsync(Guid attendanceId)
+        public async Task<ActionResult<IEnumerable<AttendanceResponseDto>>> GetByIdAsync(Guid attendanceId)
         {
             AttendanceResponseDto attendance =
                 await _attendanceService.GetByIdAsync(attendanceId);
@@ -56,15 +58,15 @@ namespace LmsProjectApi.Controllers
             AttendanceResponseDto updated =
                 await _attendanceService.UpdateAsync(attendanceId, dto);
 
-            return Ok(updated);
+            return Ok(ApiResponse<AttendanceResponseDto>.Ok(updated, "Successfully updated."));
         }
 
         [HttpDelete("{attendanceId}")]
-        public async Task<ActionResult<AttendanceResponseDto>> DeleteAsync(Guid attendanceId)
+        public async Task<IActionResult> DeleteAsync(Guid attendanceId)
         {
             await _attendanceService.DeleteAsync(attendanceId);
 
-            return Ok();
+            return Ok(ApiResponse<object>.Ok(null!, "Successfully deleted."));
         }
 
     }

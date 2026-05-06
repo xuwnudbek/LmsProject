@@ -17,7 +17,7 @@ namespace LmsProjectApi.Repositories.Users
             this.dbContext = dbContext;
         }
 
-        public async Task<User> InsertUserAsync(User user)
+        public async Task<User> InsertAsync(User user)
         {
             await this.dbContext.Users.AddAsync(user);
             await this.dbContext.SaveChangesAsync();
@@ -25,36 +25,36 @@ namespace LmsProjectApi.Repositories.Users
             return user;
         }
 
-        public IQueryable<User> SelectAllUsers()
+        public IQueryable<User> SelectAll()
         {
             return this.dbContext.Users
                 .AsNoTracking();
         }
 
-        public IQueryable<User> SelectUsersByRoleId(UserRole role)
+        public IQueryable<User> SelectByRole(UserRole role)
         {
             return this.dbContext.Users
                 .Where(user => user.Role == role);
         }
 
-        public async Task<User> SelectUserByIdAsync(Guid userId)
+        public async Task<User> SelectByIdAsync(Guid userId)
         {
             return await this.dbContext.Users
                 .FirstOrDefaultAsync(user => user.Id == userId);
         }
 
-        public async Task<User> SelectUserByUsernameAsync(string username)
+        public async Task<User> SelectByUsernameAsync(string username)
         {
             return await this.dbContext.Users
                 .FirstOrDefaultAsync(user => user.Username == username);
         }
 
-        public async Task UpdateUserAsync()
+        public async Task UpdateAsync()
         {
             await this.dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteUserAsync(Guid userId)
+        public async Task DeleteAsync(Guid userId)
         {
             var existingUser = await this.dbContext.Users
                 .FirstOrDefaultAsync(u => u.Id == userId);
