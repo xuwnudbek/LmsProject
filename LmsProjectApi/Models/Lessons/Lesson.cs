@@ -2,7 +2,6 @@
 using LmsProjectApi.Models.Courses;
 using LmsProjectApi.Models.LessonSessions;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace LmsProjectApi.Models.Lessons

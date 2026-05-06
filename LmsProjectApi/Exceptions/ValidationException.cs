@@ -34,7 +34,7 @@ namespace LmsProjectApi.Exceptions
                 .GroupBy(f => f.PropertyName)
                 .ToDictionary(
                     g => g.Key,
-                    g => g.Select(f=> f.ErrorMessage).ToArray()
+                    g => g.Select(f => f.ErrorMessage).ToArray()
                 );
         }
 

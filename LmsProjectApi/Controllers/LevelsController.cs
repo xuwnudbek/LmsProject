@@ -1,9 +1,6 @@
-﻿using LmsProjectApi.DTOs.Lessons;
-using LmsProjectApi.DTOs.Levels;
+﻿using LmsProjectApi.DTOs.Levels;
 using LmsProjectApi.Models.Api;
-using LmsProjectApi.Models.Levels;
 using LmsProjectApi.Services.Levels;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -25,7 +22,7 @@ namespace LmsProjectApi.Controllers
         [HttpPost]
         public async Task<ActionResult<LevelResponseDto>> CreateAsync(LevelCreateDto dto)
         {
-            LevelResponseDto created = 
+            LevelResponseDto created =
                 await _levelService.AddAsync(dto);
 
             return Ok(ApiResponse<LevelResponseDto>.Ok(created, "Successfully created."));
@@ -34,7 +31,7 @@ namespace LmsProjectApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<LevelResponseDto>> GetAllAsync()
         {
-            IEnumerable<LevelResponseDto> levels = 
+            IEnumerable<LevelResponseDto> levels =
                 _levelService.GetAll();
 
             return Ok(ApiResponse<IEnumerable<LevelResponseDto>>.Ok(levels));

@@ -1,7 +1,5 @@
 ﻿using LmsProjectApi.DTOs.Groups;
 using LmsProjectApi.DTOs.Users;
-using LmsProjectApi.Models.Groups;
-using LmsProjectApi.Models.Users;
 
 namespace LmsProjectApi.DTOs.UserGroups
 {

@@ -1,8 +1,5 @@
 ﻿using LmsProjectApi.DTOs.Groups;
 using LmsProjectApi.DTOs.Users;
-using LmsProjectApi.Models.Groups;
-using LmsProjectApi.Models.Users;
-using System;
 
 namespace LmsProjectApi.DTOs.Payments
 {

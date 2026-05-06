@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using LmsProjectApi.DTOs.Lessons;
 using LmsProjectApi.DTOs.LessonSessions;
 using System;
 

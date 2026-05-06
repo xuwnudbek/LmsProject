@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using LmsProjectApi.DTOs.Subjects;
-using LmsProjectApi.Models.SubjectLevels;
 using LmsProjectApi.Models.Subjects;
 
 namespace LmsProjectApi.Mappings

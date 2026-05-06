@@ -1,6 +1,5 @@
 ﻿using LmsProjectApi.Data.Context;
 using LmsProjectApi.Models.Groups;
-using LmsProjectApi.Models.Lessons;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;

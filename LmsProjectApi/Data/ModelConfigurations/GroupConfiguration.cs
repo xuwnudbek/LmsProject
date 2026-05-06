@@ -21,7 +21,7 @@ namespace LmsProjectApi.Data.ModelConfigurations
 
             builder.HasOne(g => g.Level)
                 .WithMany(l => l.Groups)
-                .HasForeignKey(g=> g.LevelId)
+                .HasForeignKey(g => g.LevelId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(g => g.Course)

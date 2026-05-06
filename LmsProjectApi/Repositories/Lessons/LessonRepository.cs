@@ -24,7 +24,7 @@ namespace LmsProjectApi.Repositories.Lessons
 
             return await SelectByIdAsync(entry.Entity.Id);
         }
-        
+
         public async Task<IEnumerable<Lesson>> InsertRangeAsync(
             IEnumerable<Lesson> lessons)
         {

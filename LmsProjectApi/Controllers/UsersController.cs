@@ -1,19 +1,10 @@
 ﻿using AutoMapper;
-using LmsProjectApi.DTOs.Subjects;
 using LmsProjectApi.DTOs.Users;
-using LmsProjectApi.Enums;
 using LmsProjectApi.Models.Api;
-using LmsProjectApi.Models.Subjects;
-using LmsProjectApi.Models.Users;
 using LmsProjectApi.Services.Users;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace LmsProjectApi.Controllers

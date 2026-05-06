@@ -1,7 +1,6 @@
 using LmsProjectApi.Models.Base;
 using LmsProjectApi.Models.Courses;
 using LmsProjectApi.Models.SubjectLevels;
-using System;
 using System.Collections.Generic;
 
 namespace LmsProjectApi.Models.Subjects

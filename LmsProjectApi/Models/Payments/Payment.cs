@@ -6,11 +6,11 @@ using System;
 namespace LmsProjectApi.Models.Payments
 {
     public class Payment : BaseEntity
-    { 
+    {
         public int Amount { get; set; }
         public int DiscountAmount { get; set; }
         public string Comment { get; set; }
-        
+
         public Guid UserId { get; set; }
         public User User { get; set; }
 

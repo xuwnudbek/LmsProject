@@ -31,7 +31,6 @@ namespace LmsProjectApi.Services.LessonSessions
             _mapper = mapper;
         }
 
-
         public async Task<LessonSessionResponseDto> AddAsync(LessonSessionCreateDto dto)
         {
             var validatorResult = _lessonSessionCreateValidator.Validate(dto);
@@ -52,7 +51,7 @@ namespace LmsProjectApi.Services.LessonSessions
             ICollection<LessonSession> lessonSessions =
                 _lessonSessionRepository
                     .SelectAll()
-                    .Include(ls =>ls.Lesson)
+                    .Include(ls => ls.Lesson)
                     .ToList();
 
             return _mapper.Map<ICollection<LessonSessionResponseDto>>(lessonSessions);

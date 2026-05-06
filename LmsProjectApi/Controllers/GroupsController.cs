@@ -1,13 +1,10 @@
 ﻿using LmsProjectApi.DTOs.Groups;
 using LmsProjectApi.Models.Api;
 using LmsProjectApi.Services.Groups;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace LmsProjectApi.Controllers
 {
@@ -55,7 +52,7 @@ namespace LmsProjectApi.Controllers
             Guid groupId,
             GroupUpdateDto dto)
         {
-            GroupResponseDto updated = 
+            GroupResponseDto updated =
                 await _groupService.UpdateAsync(groupId, dto);
 
             return Ok(ApiResponse<GroupResponseDto>.Ok(updated, "Successfully updated."));

@@ -3,7 +3,6 @@ using FluentValidation;
 using LmsProjectApi.DTOs.Courses;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Models.Courses;
-using LmsProjectApi.Models.UserCredentials;
 using LmsProjectApi.Repositories.Courses;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -41,7 +40,7 @@ namespace LmsProjectApi.Services.Courses
 
             Course course = _mapper.Map<Course>(dto);
 
-            Course created = 
+            Course created =
                 await _courseRepository.InsertAsync(course);
 
             return _mapper.Map<CourseResponseDto>(created);
@@ -50,7 +49,7 @@ namespace LmsProjectApi.Services.Courses
 
         public ICollection<CourseResponseDto> GetAll()
         {
-            ICollection<Course> courses = 
+            ICollection<Course> courses =
                 _courseRepository
                     .SelectAll()
                     .Include(c => c.User)
@@ -89,7 +88,7 @@ namespace LmsProjectApi.Services.Courses
 
             return _mapper.Map<CourseResponseDto>(existingCourse);
         }
-        
+
         public async Task DeleteAsync(Guid courseId)
         {
             Course existingCourse =

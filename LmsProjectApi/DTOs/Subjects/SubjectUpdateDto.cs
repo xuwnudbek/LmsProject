@@ -1,5 +1,4 @@
-﻿using LmsProjectApi.DTOs.SubjectLevel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace LmsProjectApi.DTOs.Subjects

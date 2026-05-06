@@ -1,5 +1,4 @@
 ﻿using LmsProjectApi.Models.Groups;
-using LmsProjectApi.Models.Lessons;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

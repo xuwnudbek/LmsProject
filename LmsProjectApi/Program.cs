@@ -14,7 +14,6 @@ using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 
@@ -25,7 +24,7 @@ namespace LmsProjectApi
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
+
             // Add Environments
             builder.Configuration.AddEnvironmentVariables();
 

@@ -1,5 +1,4 @@
 ﻿using LmsProjectApi.DTOs.Users;
-using LmsProjectApi.Enums;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

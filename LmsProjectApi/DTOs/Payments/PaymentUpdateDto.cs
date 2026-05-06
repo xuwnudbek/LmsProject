@@ -1,5 +1,4 @@
-﻿using LmsProjectApi.Models.Users;
-using System;
+﻿using System;
 
 namespace LmsProjectApi.DTOs.Payments
 {

@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using LmsProjectApi.Models.Levels;
+﻿using LmsProjectApi.Models.Levels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

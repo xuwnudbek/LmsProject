@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using LmsProjectApi.DTOs.Users;
-using System.Data;
 
 namespace LmsProjectApi.Validators.Users
 {

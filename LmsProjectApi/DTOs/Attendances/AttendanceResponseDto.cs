@@ -1,9 +1,6 @@
 ﻿using LmsProjectApi.DTOs.LessonSessions;
 using LmsProjectApi.DTOs.Users;
 using LmsProjectApi.Enums;
-using LmsProjectApi.Models.LessonSessions;
-using LmsProjectApi.Models.Users;
-using System;
 
 namespace LmsProjectApi.DTOs.Attendances
 {

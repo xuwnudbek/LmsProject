@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using LmsProjectApi.DTOs.Levels;
-using LmsProjectApi.DTOs.SubjectLevel;
 using LmsProjectApi.DTOs.Subjects;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Models.SubjectLevels;
@@ -47,7 +45,7 @@ namespace LmsProjectApi.Services.Subjects
 
             var subject = _mapper.Map<Subject>(dto);
 
-            if(!dto.HasLevel && dto.Levels.Any())
+            if (!dto.HasLevel && dto.Levels.Any())
                 throw new BadRequestException("Levels cannot be provided when HasLevel is false.");
 
             var incomingLevelIds = dto.Levels;
@@ -107,7 +105,7 @@ namespace LmsProjectApi.Services.Subjects
 
             Subject existingSubject =
                 await _subjectRepository.SelectByIdAsync(subjectId);
-            
+
             if (existingSubject is null)
                 throw new NotFoundException($"Subject with id ({subjectId}) not found.");
 
@@ -143,7 +141,7 @@ namespace LmsProjectApi.Services.Subjects
             Subject updatedSubject =
                 await _subjectRepository.SelectByIdAsync(subjectId);
 
-            updatedSubject.SubjectLevels = 
+            updatedSubject.SubjectLevels =
                 updatedSubject.SubjectLevels
                     .OrderBy(sl => sl.OrderIndex)
                     .ToList();

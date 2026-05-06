@@ -2,7 +2,6 @@
 
 using LmsProjectApi.DTOs.Attendances;
 using LmsProjectApi.Models.Api;
-using LmsProjectApi.Models.UserTokens;
 using LmsProjectApi.Services.Attendances;
 using Microsoft.AspNetCore.Mvc;
 using System;

@@ -33,7 +33,7 @@ namespace LmsProjectApi.Repositories.Levels
         public Task<Level> SelectByIdAsync(Guid id)
         {
             return _dbContext.Levels
-                .FirstOrDefaultAsync(level=> level.Id == id);
+                .FirstOrDefaultAsync(level => level.Id == id);
         }
 
         public Task UpdateAsync() =>

@@ -9,7 +9,7 @@ namespace LmsProjectApi.Validators.Subjects
         {
             RuleFor(p => p.Name)
                 .NotNull().WithMessage("Name is required.");
-            
+
             RuleFor(p => p.HasLevel)
                 .NotNull().WithMessage("HasLevel is required.");
         }

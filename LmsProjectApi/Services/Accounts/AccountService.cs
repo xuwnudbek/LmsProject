@@ -8,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -39,16 +38,16 @@ namespace LmsProjectApi.Services.Accounts
             if (!validationResult.IsValid)
                 throw new Exceptions.ValidationException(validationResult.Errors);
 
-            User existingUser = 
+            User existingUser =
                 await _userRepository.SelectByUsernameAsync(userCredential.Username);
 
             if (existingUser is null)
                 throw new Exceptions.ValidationException("Invalid login credentials");
 
-            bool isValidPassword = 
+            bool isValidPassword =
                 HashingHelper.Verify(userCredential.Password, existingUser.PasswordHash);
 
-            if(isValidPassword is not true)
+            if (isValidPassword is not true)
                 throw new Exceptions.ValidationException("Invalid login credentials");
 
             return GenerateUserToken(existingUser);

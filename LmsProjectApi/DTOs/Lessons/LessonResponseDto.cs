@@ -1,5 +1,4 @@
 ﻿using LmsProjectApi.Models.Base;
-using LmsProjectApi.Models.Courses;
 using System;
 
 namespace LmsProjectApi.DTOs.Lessons

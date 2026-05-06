@@ -1,8 +1,6 @@
 ﻿using LmsProjectApi.DTOs.Lessons;
 using LmsProjectApi.Models.Api;
-using LmsProjectApi.Models.Lessons;
 using LmsProjectApi.Services.Lessons;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

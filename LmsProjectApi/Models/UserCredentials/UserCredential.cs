@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace LmsProjectApi.Models.UserCredentials
+﻿namespace LmsProjectApi.Models.UserCredentials
 {
     public class UserCredential
     {

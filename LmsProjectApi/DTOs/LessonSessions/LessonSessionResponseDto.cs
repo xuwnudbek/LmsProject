@@ -1,8 +1,6 @@
 ﻿using LmsProjectApi.DTOs.Groups;
 using LmsProjectApi.DTOs.Lessons;
 using LmsProjectApi.Enums;
-using LmsProjectApi.Models.Groups;
-using LmsProjectApi.Models.Lessons;
 using System;
 
 namespace LmsProjectApi.DTOs.LessonSessions

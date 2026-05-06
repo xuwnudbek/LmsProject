@@ -8,7 +8,7 @@ namespace LmsProjectApi.Data.ModelConfigurations
     {
         public void Configure(EntityTypeBuilder<Course> builder)
         {
-            builder.HasIndex(c => new {c.UserId, c.SubjectId})
+            builder.HasIndex(c => new { c.UserId, c.SubjectId })
                 .IsUnique();
 
             builder.Property(c => c.Name)
@@ -26,7 +26,7 @@ namespace LmsProjectApi.Data.ModelConfigurations
             builder.Property(c => c.UpdatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .ValueGeneratedOnAddOrUpdate();
-            
+
             // Relations
             builder.HasOne(c => c.User)
                 .WithMany(u => u.Courses)

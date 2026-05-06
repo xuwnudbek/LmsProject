@@ -5,7 +5,6 @@ using LmsProjectApi.Exceptions;
 using LmsProjectApi.Models.Lessons;
 using LmsProjectApi.Repositories.Lessons;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -59,7 +58,7 @@ namespace LmsProjectApi.Services.Lessons
 
         public ICollection<LessonResponseDto> GetAll()
         {
-            ICollection<Lesson> lessons = 
+            ICollection<Lesson> lessons =
                 _lessonRepository.SelectAll().ToList();
 
             return _mapper.Map<ICollection<LessonResponseDto>>(lessons);
@@ -71,7 +70,7 @@ namespace LmsProjectApi.Services.Lessons
             Lesson existingLesson =
                 await _lessonRepository.SelectByIdAsync(lessonId);
 
-            if(existingLesson is null)
+            if (existingLesson is null)
                 throw new NotFoundException($"Lesson with id ({lessonId}) not found.");
 
             return _mapper.Map<LessonResponseDto>(existingLesson);
@@ -96,7 +95,7 @@ namespace LmsProjectApi.Services.Lessons
 
             return _mapper.Map<LessonResponseDto>(existingLesson);
         }
-        
+
         public async Task DeleteAsync(Guid lessonId)
         {
             Lesson existingLesson =

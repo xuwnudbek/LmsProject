@@ -19,7 +19,7 @@ namespace LmsProjectApi.Repositories.SubjectLevels
             _dbContext.SubjectLevels.Remove(subjectLevel);
             await _dbContext.SaveChangesAsync();
         }
-        
+
         public async Task DeleteRangeAsync(ICollection<SubjectLevel> subjectLevels)
         {
             _dbContext.SubjectLevels.RemoveRange(subjectLevels);

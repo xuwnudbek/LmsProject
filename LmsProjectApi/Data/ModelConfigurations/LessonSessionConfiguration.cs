@@ -9,7 +9,7 @@ namespace LmsProjectApi.Data.ModelConfigurations
     {
         public void Configure(EntityTypeBuilder<LessonSession> builder)
         {
-            builder.Property(ls=>ls.Status)
+            builder.Property(ls => ls.Status)
                 .IsRequired();
 
             builder.Property(ls => ls.TeacherAttendanceStatus)
@@ -26,9 +26,9 @@ namespace LmsProjectApi.Data.ModelConfigurations
                 .HasForeignKey(ls => ls.GroupId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(ls=> ls.Lesson)
+            builder.HasOne(ls => ls.Lesson)
                 .WithMany(l => l.LessonSessions)
-                .HasForeignKey(ls=> ls.LessonId)
+                .HasForeignKey(ls => ls.LessonId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

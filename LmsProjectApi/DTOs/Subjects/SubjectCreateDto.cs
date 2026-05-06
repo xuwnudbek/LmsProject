@@ -1,8 +1,5 @@
-﻿using LmsProjectApi.DTOs.SubjectLevel;
-using LmsProjectApi.Models.SubjectLevels;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace LmsProjectApi.DTOs.Subjects
 {

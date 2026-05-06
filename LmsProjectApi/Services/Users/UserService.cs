@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using LmsProjectApi.DTOs.Users;
-using LmsProjectApi.Enums;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Helpers;
 using LmsProjectApi.Models.Users;
 using LmsProjectApi.Repositories.Users;
-using LmsProjectApi.Validators.Subjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,7 +62,7 @@ namespace LmsProjectApi.Services.Users
 
         public ICollection<UserResponseDto> GetAll()
         {
-            IQueryable<User> users = 
+            IQueryable<User> users =
                 _userRepository.SelectAll();
 
             return _mapper.Map<ICollection<UserResponseDto>>(users);
@@ -96,7 +94,7 @@ namespace LmsProjectApi.Services.Users
             if (existingUser is null)
                 throw new NotFoundException("User not found.");
 
-            if(dto.Password is not null)
+            if (dto.Password is not null)
             {
                 existingUser.PasswordHash = HashingHelper.GetHash(dto.Password);
             }

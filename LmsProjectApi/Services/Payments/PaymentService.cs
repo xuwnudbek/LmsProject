@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using LmsProjectApi.DTOs.Levels;
 using LmsProjectApi.DTOs.Payments;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Models.Payments;

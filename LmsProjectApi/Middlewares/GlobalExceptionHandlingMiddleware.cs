@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using LmsProjectApi.Exceptions;
+﻿using LmsProjectApi.Exceptions;
 using LmsProjectApi.Models.Api;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace LmsProjectApi.Middlewares;
 

@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using LmsProjectApi.DTOs.Courses;
 using LmsProjectApi.DTOs.Groups;
-using LmsProjectApi.DTOs.Levels;
 using LmsProjectApi.Exceptions;
 using LmsProjectApi.Models.Groups;
-using LmsProjectApi.Models.Levels;
 using LmsProjectApi.Repositories.Groups;
 using System;
 using System.Collections.Generic;
@@ -50,7 +47,7 @@ namespace LmsProjectApi.Services.Groups
 
         public ICollection<GroupSimpleDto> GetAll()
         {
-            ICollection<Group> groups = 
+            ICollection<Group> groups =
                 _groupRepository
                     .SelectAll()
                     .OrderBy(g => g.CreatedAt)
@@ -61,7 +58,7 @@ namespace LmsProjectApi.Services.Groups
 
         public async Task<GroupResponseDto> GetByIdAsync(Guid groupId)
         {
-            Group existingGroup = 
+            Group existingGroup =
                 await _groupRepository.SelectByIdAsync(groupId);
 
             if (existingGroup is null)

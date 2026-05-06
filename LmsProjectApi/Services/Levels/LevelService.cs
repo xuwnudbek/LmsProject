@@ -47,7 +47,7 @@ namespace LmsProjectApi.Services.Levels
 
         public ICollection<LevelResponseDto> GetAll()
         {
-            ICollection<Level> levels = 
+            ICollection<Level> levels =
                 _levelRepository
                     .SelectAll()
                     .OrderBy(l => l.CreatedAt)
@@ -81,7 +81,7 @@ namespace LmsProjectApi.Services.Levels
 
             if (existingLevel is null)
                 throw new NotFoundException($"Level with id ({levelId}) not found");
-            
+
             existingLevel.Name = dto.Name;
 
             await _levelRepository.UpdateAsync();

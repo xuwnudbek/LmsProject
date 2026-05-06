@@ -1,10 +1,6 @@
-﻿using LmsProjectApi.DTOs.Levels;
-using LmsProjectApi.DTOs.Payments;
+﻿using LmsProjectApi.DTOs.Payments;
 using LmsProjectApi.Models.Api;
-using LmsProjectApi.Models.Levels;
-using LmsProjectApi.Models.Payments;
 using LmsProjectApi.Services.Payments;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -26,7 +22,7 @@ namespace LmsProjectApi.Controllers
         [HttpPost]
         public async Task<ActionResult<PaymentResponseDto>> CreateAsync(PaymentCreateDto dto)
         {
-            PaymentResponseDto created = 
+            PaymentResponseDto created =
                 await _paymentService.AddAsync(dto);
 
             return Ok(ApiResponse<PaymentResponseDto>.Ok(created, "Successfully created."));

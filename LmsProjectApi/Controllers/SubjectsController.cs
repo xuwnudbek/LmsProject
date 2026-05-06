@@ -1,13 +1,8 @@
-﻿using LmsProjectApi.DTOs.Levels;
-using LmsProjectApi.DTOs.Payments;
-using LmsProjectApi.DTOs.Subjects;
+﻿using LmsProjectApi.DTOs.Subjects;
 using LmsProjectApi.Models.Api;
-using LmsProjectApi.Models.Subjects;
 using LmsProjectApi.Services.Subjects;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
